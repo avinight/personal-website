@@ -1,0 +1,258 @@
+---
+import profilePic from '../assets/bucchi.png';
+---
+
+<script is:inline>
+  document.addEventListener('astro:after-swap', function () {
+    if (localStorage.getItem('theme') === 'dark')
+      document.documentElement.classList.toggle('dark', true)
+  })
+
+  const getThemePreference = () => {
+    return localStorage.getItem('theme')
+  }
+
+  const isDark = getThemePreference() === 'dark'
+  document.documentElement.classList[isDark ? 'add' : 'remove']('dark')
+
+  // Theme toggle functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('theme-toggle')
+    const updateToggleText = () => {
+      if (document.documentElement.classList.contains('dark')) {
+        themeToggle.textContent = '☀️'
+      } else {
+        themeToggle.textContent = '🌙'
+      }
+    }
+    
+    updateToggleText()
+    
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.contains('dark')
+      document.documentElement.classList.toggle('dark', !isDark)
+      localStorage.setItem('theme', isDark ? 'light' : 'dark')
+      updateToggleText()
+    })
+  })
+</script>
+
+<header>
+	<div class="container flex h-16 items-center justify-between space-x-4 sm:space-x-0">
+		<div class="profile-section">
+			<a class="avatar-link" href="https://github.com/avinight" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+				<img src={profilePic.src} alt="Profile Picture" class="avatar-img" />
+			</a>
+			<span class="profile-name">Frederick Meneses</span>
+		</div>
+		
+		<nav class="header-nav">
+			<a href="/">Home</a>
+			<a href="/experience">Experience</a>
+			<a href="/projects">Projects</a>
+			<button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+				🌙
+			</button>
+		</nav>
+	</div>
+	<!-- Space for future navigation items -->
+    
+</header>
+
+<style>
+	header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 1000;
+		padding: 20px;
+		pointer-events: none; /* Allows clicks to pass through empty areas */
+		background: rgba(253, 245, 230, 0.9); /* Cream background for light mode */
+		backdrop-filter: blur(20px);
+		border-bottom: 3px solid rgba(112, 66, 20, 0.3); /* Brown border for cream theme */
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	}
+
+	/* Dark mode header */
+	:global(.dark) header {
+		background: rgba(44, 44, 44, 0.9);
+		border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+	}
+
+	.container {
+		pointer-events: auto; /* Re-enable clicks for the header content */
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.profile-section {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.avatar-link {
+		display: inline-block;
+		text-decoration: none;
+	}
+
+	.profile-name {
+        font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+		color: rgba(112, 66, 20, 0.95); /* Brown text for cream background */
+		font-size: 18px;
+		font-weight: 600;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	}
+
+	/* Dark mode profile name */
+	:global(.dark) .profile-name {
+		color: rgba(255, 255, 255, 0.95);
+	}
+
+	.profile-avatar {
+		pointer-events: auto; /* Re-enable clicks for the avatar */
+	}
+
+	.header-nav {
+		display: flex;
+		gap: 24px;
+		align-items: center;
+	}
+
+	.header-nav a {
+		color: rgba(112, 66, 20, 0.9); /* Brown text for cream background */
+		text-decoration: none;
+		padding: 10px 18px;
+		border-radius: 8px;
+		transition: all 0.3s ease;
+		font-weight: 600;
+		background: rgba(112, 66, 20, 0.1); /* Light brown background */
+		backdrop-filter: blur(15px);
+		border: 2px solid rgba(112, 66, 20, 0.2);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	}
+
+	.header-nav a:hover {
+		background: rgba(112, 66, 20, 0.2);
+		transform: translateY(-2px);
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+		border-color: rgba(112, 66, 20, 0.4);
+	}
+
+	/* Dark mode navigation */
+	:global(.dark) .header-nav a {
+		color: rgba(255, 255, 255, 0.95);
+		background: rgba(255, 255, 255, 0.15);
+		border: 2px solid rgba(255, 255, 255, 0.3);
+	}
+
+	:global(.dark) .header-nav a:hover {
+		background: rgba(255, 255, 255, 0.25);
+		border-color: rgba(255, 255, 255, 0.5);
+	}
+
+	.theme-toggle {
+		background: rgba(112, 66, 20, 0.1);
+		border: 2px solid rgba(112, 66, 20, 0.2);
+		border-radius: 8px;
+		padding: 8px 12px;
+		font-size: 16px;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		backdrop-filter: blur(15px);
+	}
+
+	.theme-toggle:hover {
+		background: rgba(112, 66, 20, 0.2);
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	}
+
+	:global(.dark) .theme-toggle {
+		background: rgba(255, 255, 255, 0.15);
+		border: 2px solid rgba(255, 255, 255, 0.3);
+	}
+
+	:global(.dark) .theme-toggle:hover {
+		background: rgba(255, 255, 255, 0.25);
+	}
+
+	.avatar-img {
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		object-fit: cover;
+		border: 3px solid rgba(255, 255, 255, 0.9);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		cursor: pointer;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.avatar-img:hover {
+		transform: scale(1.05);
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+	}
+
+	/* Mobile responsive */
+	@media (max-width: 640px) {
+		.profile-name {
+			display: none;
+		}
+
+		.profile-section {
+			gap: 0;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.header-nav {
+			gap: 12px;
+		}
+		
+		.header-nav a {
+			padding: 6px 12px;
+			font-size: 14px;
+		}
+
+		.profile-name {
+			font-size: 16px;
+		}
+
+		.profile-section {
+			gap: 10px;
+		}
+	}
+
+	@media (max-width: 480px) {
+		header {
+			padding: 15px;
+		}
+		
+		.header-nav {
+			gap: 8px;
+		}
+		
+		.header-nav a {
+			padding: 4px 8px;
+			font-size: 12px;
+		}
+		
+		.avatar-img {
+			width: 40px;
+			height: 40px;
+		}
+
+		.profile-name {
+			font-size: 14px;
+		}
+
+		.profile-section {
+			gap: 8px;
+		}
+	}
+</style>

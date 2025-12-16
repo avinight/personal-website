@@ -9,6 +9,15 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.13.3"
+    "@astrojs/check": "^0.9.6",
+    "@astrojs/solid-js": "^5.1.0",
+    "@iconify-json/lucide": "^1.2.63",
+    "@iconify-json/mdi": "^1.2.3",
+    "@iconify-json/simple-icons": "^1.2.48",
+    "astro": "^5.13.3",
+    "astro-icon": "^1.1.5",
+    "class-variance-authority": "^0.7.1",
+    "solid-js": "^1.9.9",
+    "typescript": "^5.9.3"
   }
 }

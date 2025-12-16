@@ -1,0 +1,311 @@
+---
+import Header from '../components/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+import { Icon } from 'astro-icon/components';
+import background from '../assets/background.svg';
+
+const experiences = [
+	{
+		role: 'Software Developer Intern',
+		org: 'Knowlecy Technologies Inc.',
+		location: 'Vancouver, BC (Remote)',
+		dates: 'January 2025 - May 2025',
+		summary: 'Built core features in a <strong>retrieval augmented generation (RAG)</strong> chat application using <strong>React</strong> and <strong>Neo4j</strong>',
+		highlights: [
+			"Eliminated <strong>10+</strong> critical rendering bottlenecks, reducing UI latency and improving application stability.",
+			"Enabled <strong>persistent state management</strong> functionality, enhancing user navigation and live feedback loops."
+		],
+		tech: [
+			{ name: 'React', iconName: 'simple-icons:react' },
+			{ name: 'TypeScript', iconName: 'simple-icons:typescript' },
+            { name: 'Neo4j', iconName: 'simple-icons:neo4j' }
+		]
+	}
+];
+---
+
+<Layout>
+	<Header />
+	<img id="background" src={background.src} alt="" fetchpriority="high" />
+	<div id="cream-overlay"></div>
+	<div id="container">
+		<main>
+			<div id="content">
+				<h1>Experience</h1>
+				<p class="intro">Projects where I shipped and learned.</p>
+
+				<div class="timeline">
+					{experiences.map(exp => (
+						<section class="exp-card">
+							<div class="exp-header">
+								<div class="titles">
+									<h2>{exp.role}</h2>
+									<p class="org">{exp.org}</p>
+								</div>
+								<div class="meta">
+									<span class="date">{exp.dates}</span>
+									<span class="location">{exp.location}</span>
+								</div>
+							</div>
+
+							<p class="summary" set:html={exp.summary}></p>
+
+							{exp.highlights && exp.highlights.length > 0 && (
+								<ul class="highlights">
+									{exp.highlights.map(point => (
+										<li set:html={point}></li>
+									))}
+								</ul>
+							)}
+
+							{exp.tech && exp.tech.length > 0 && (
+								<div class="tags">
+									{exp.tech.map(tag => (
+										<span class="tag">
+											<span class="tag-icon">
+												<Icon name={tag.iconName} />
+											</span>
+											<span class="tag-name">{tag.name}</span>
+										</span>
+									))}
+								</div>
+							)}
+						</section>
+					))}
+				</div>
+			</div>
+		</main>
+	</div>
+	<Footer />
+</Layout>
+
+<style>
+	#background {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -2;
+		object-fit: cover;
+	}
+
+	#cream-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+		background-color: #FDF5E6;
+		opacity: 0.8;
+	}
+
+	:global(.dark) #cream-overlay {
+		background-color: #2c2c2c;
+		opacity: 0.9;
+	}
+
+	#container {
+		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+		min-height: 100vh;
+	}
+
+
+
+	main {
+		min-height: 100vh;
+		display: flex;
+		justify-content: center;
+		padding: 20px;
+		margin-top: 100px;
+	}
+
+	#content {
+		max-width: 1200px;
+		width: 100%;
+		padding: 16px;
+	}
+
+	h1 {
+		font-size: 48px;
+		margin-bottom: 12px;
+		color: #704214;
+		font-weight: 700;
+	}
+
+	.intro {
+		color: #5D4037;
+		font-size: 18px;
+		line-height: 28px;
+		margin-bottom: 32px;
+	}
+
+	:global(.dark) h1 {
+		color: #f5f5dc;
+	}
+
+	:global(.dark) .intro {
+		color: #e0e0e0;
+	}
+
+	.timeline {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.exp-card {
+		background: rgba(255, 255, 255, 0.85);
+		border: 2px solid rgba(112, 66, 20, 0.2);
+		border-radius: 16px;
+		padding: 24px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		backdrop-filter: blur(10px);
+		transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+	}
+
+	.exp-card:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
+		border-color: rgba(112, 66, 20, 0.4);
+	}
+
+	:global(.dark) .exp-card {
+		background: rgba(60, 60, 60, 0.85);
+		border: 2px solid rgba(255, 255, 255, 0.2);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+	}
+
+	:global(.dark) .exp-card:hover {
+		border-color: rgba(255, 255, 255, 0.4);
+	}
+
+	.exp-header {
+		display: flex;
+		justify-content: space-between;
+		gap: 16px;
+		flex-wrap: wrap;
+		margin-bottom: 12px;
+	}
+
+	.titles h2 {
+		margin: 0;
+		font-size: 22px;
+		color: #704214;
+	}
+
+	.titles .org {
+		margin: 4px 0 0;
+		color: #5D4037;
+		font-weight: 600;
+	}
+
+	.meta {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 4px;
+		font-weight: 600;
+		color: #704214;
+	}
+
+	.date,
+	.location {
+		font-size: 14px;
+		color: #5D4037;
+	}
+
+	.summary {
+		margin: 0 0 12px;
+		color: #5D4037;
+		line-height: 1.6;
+	}
+
+	.highlights {
+		margin: 0 0 16px 0;
+		padding-left: 18px;
+		color: #5D4037;
+		line-height: 1.6;
+	}
+
+	.highlights li {
+		margin-bottom: 8px;
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.tag {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 14px;
+		background: rgba(112, 66, 20, 0.15);
+		border: 1px solid rgba(112, 66, 20, 0.3);
+		border-radius: 12px;
+		font-size: 13px;
+		font-weight: 600;
+		color: #704214;
+	}
+
+	.tag-icon :global(svg) {
+		width: 18px;
+		height: 18px;
+		flex-shrink: 0;
+	}
+
+	.tag-name {
+		line-height: 1;
+	}
+
+	:global(.dark) h2,
+	:global(.dark) .org,
+	:global(.dark) .meta,
+	:global(.dark) .date,
+	:global(.dark) .location,
+	:global(.dark) .summary,
+	:global(.dark) .highlights {
+		color: #f5f5dc;
+	}
+
+	:global(.dark) .tag {
+		background: rgba(255, 255, 255, 0.15);
+		border-color: rgba(255, 255, 255, 0.3);
+		color: #f5f5dc;
+	}
+
+	@media (max-width: 768px) {
+		h1 {
+			font-size: 36px;
+		}
+
+		.exp-card {
+			padding: 20px;
+		}
+
+		.titles h2 {
+			font-size: 20px;
+		}
+	}
+
+	@media (max-width: 480px) {
+		main {
+			margin-top: 80px;
+			padding: 10px;
+		}
+
+		h1 {
+			font-size: 30px;
+		}
+
+		.exp-header {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+</style>

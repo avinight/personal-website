@@ -1,0 +1,341 @@
+---
+import Header from '../components/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+import { Icon } from 'astro-icon/components';
+import { projects } from '../data/projects.ts';
+import background from '../assets/background.svg';
+---
+
+<Layout>
+	<Header />
+	<img id="background" src={background.src} alt="" fetchpriority="high" />
+	<div id="cream-overlay"></div>
+	<div id="container">
+		<main>
+			<div id="content">
+				<h1>My Projects</h1>
+				<p class="intro">Here are some of the projects I've been working on.</p>
+				
+				<div class="projects-grid">
+					{projects.map(project => (
+						<div class="project-card">
+							<h2>{project.title}</h2>
+							{Array.isArray(project.description) ? (
+								<ul class="description-list">
+									{project.description.map(item => (
+										<li set:html={item.replace(/\*(.*?)\*/g, '<strong>$1</strong>')} />
+									))}
+								</ul>
+							) : (
+								<p set:html={project.description.replace(/\*(.*?)\*/g, '<strong>$1</strong>')}></p>
+							)}
+							{project.tags && project.tags.length > 0 && (
+								<div class="tags">
+									{project.tags.map(tag => (
+										<span class="tag">
+											<span class="tag-icon">
+												<Icon name={tag.iconName} />
+											</span>
+											<span class="tag-name">{tag.name}</span>
+										</span>
+									))}
+								</div>
+							)}
+							<div class="project-links">
+								{project.demoUrl && (
+									<a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+										<span class="link-icon">
+											<Icon name="lucide:external-link" />
+										</span>
+										<span>View Demo</span>
+									</a>
+								)}
+								{project.sourceUrl && (
+									<a href={project.sourceUrl} target="_blank" rel="noopener noreferrer">
+										<span class="link-icon">
+											<Icon name="lucide:github" />
+										</span>
+										<span>Source Code</span>
+									</a>
+								)}
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
+		</main>
+	</div>
+	<Footer />
+</Layout>
+
+<style>
+	#background {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -2;
+		object-fit: cover;
+	}
+
+	#cream-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+		background-color: #FDF5E6;
+		opacity: 0.8;
+	}
+
+	:global(.dark) #cream-overlay {
+		background-color: #2c2c2c;
+		opacity: 0.9;
+	}
+
+	#container {
+		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+		min-height: 100vh;
+	}
+
+
+
+	main {
+		min-height: 100vh;
+		display: flex;
+		justify-content: center;
+		padding: 20px;
+		margin-top: 100px; /* Space for the header */
+	}
+
+	#content {
+		max-width: 1200px;
+		width: 100%;
+		padding: 16px;
+	}
+
+	h1 {
+		font-size: 48px;
+		margin-bottom: 16px;
+		color: #704214; /* Brown for cream background */
+		font-weight: 700;
+	}
+
+	.intro {
+		color: #5D4037;
+		font-size: 18px;
+		line-height: 28px;
+		margin-bottom: 48px;
+	}
+
+	/* Dark mode text colors */
+	:global(.dark) h1 {
+		color: #f5f5dc;
+	}
+
+	:global(.dark) .intro {
+		color: #e0e0e0;
+	}
+
+	.projects-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+		gap: 32px;
+		margin-top: 40px;
+	}
+
+	.project-card {
+		padding: 32px;
+		border-radius: 16px;
+		background: rgba(255, 255, 255, 0.8);
+		border: 2px solid rgba(112, 66, 20, 0.2);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		transition: all 0.3s ease;
+		backdrop-filter: blur(10px);
+	}
+
+	.project-card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+		border-color: rgba(112, 66, 20, 0.4);
+	}
+
+	/* Dark mode project cards */
+	:global(.dark) .project-card {
+		background: rgba(60, 60, 60, 0.8);
+		border: 2px solid rgba(255, 255, 255, 0.2);
+	}
+
+	:global(.dark) .project-card:hover {
+		border-color: rgba(255, 255, 255, 0.4);
+	}
+
+	.project-card h2 {
+		font-size: 24px;
+		margin: 0 0 16px 0;
+		color: #704214;
+		font-weight: 600;
+	}
+
+	:global(.dark) .project-card h2 {
+		color: #f5f5dc;
+	}
+
+	.project-card p {
+		color: #5D4037;
+		font-size: 16px;
+		line-height: 24px;
+		margin-bottom: 16px;
+	}
+
+	:global(.dark) .project-card p {
+		color: #d0d0d0;
+	}
+
+	.description-list {
+		margin: 0 0 16px 0;
+		padding-left: 18px;
+		color: #5D4037;
+		font-size: 16px;
+		line-height: 24px;
+		list-style-type: disc;
+	}
+
+	.description-list li {
+		margin-bottom: 6px;
+	}
+
+	:global(.dark) .description-list {
+		color: #d0d0d0;
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-bottom: 20px;
+	}
+
+	.tag {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 14px;
+		background: rgba(112, 66, 20, 0.15);
+		border: 1px solid rgba(112, 66, 20, 0.3);
+		border-radius: 12px;
+		font-size: 13px;
+		font-weight: 600;
+		color: #704214;
+	}
+
+	.tag:hover {
+		background: rgba(112, 66, 20, 0.14);
+		border-color: rgba(112, 66, 20, 0.35);
+		color: #5a3610;
+	}
+
+	.tag-icon :global(svg) {
+		width: 18px;
+		height: 18px;
+		flex-shrink: 0;
+	}
+
+	.tag-name {
+		line-height: 1;
+	}
+
+	:global(.dark) .tag {
+		background: rgba(255, 255, 255, 0.08);
+		border-color: rgba(255, 255, 255, 0.25);
+		color: #f5f5dc;
+	}
+
+	:global(.dark) .tag:hover {
+		background: rgba(255, 255, 255, 0.16);
+		border-color: rgba(255, 255, 255, 0.4);
+		color: #ffffff;
+	}
+
+	.project-links {
+	}
+
+	.project-links a {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		color: #704214;
+		text-decoration: none;
+		padding: 10px 20px;
+		border-radius: 8px;
+		background: rgba(112, 66, 20, 0.1);
+		border: 2px solid rgba(112, 66, 20, 0.3);
+		font-weight: 600;
+		transition: all 0.3s ease;
+		font-size: 14px;
+	}
+	.link-icon :global(svg) {
+		width: 18px;
+		height: 18px;
+		flex-shrink: 0;
+	}
+
+	.project-links a:hover {
+		background: rgba(112, 66, 20, 0.2);
+		border-color: rgba(112, 66, 20, 0.5);
+		transform: translateY(-2px);
+	}
+
+	:global(.dark) .project-links a {
+		color: #f5f5dc;
+		background: rgba(255, 255, 255, 0.1);
+		border-color: rgba(255, 255, 255, 0.3);
+	}
+
+	:global(.dark) .project-links a:hover {
+		background: rgba(255, 255, 255, 0.2);
+		border-color: rgba(255, 255, 255, 0.5);
+	}
+
+	/* Mobile responsive */
+	@media (max-width: 768px) {
+		h1 {
+			font-size: 36px;
+		}
+
+		.intro {
+			font-size: 16px;
+		}
+
+		.projects-grid {
+			grid-template-columns: 1fr;
+			gap: 24px;
+		}
+
+		.project-card {
+			padding: 24px;
+		}
+	}
+
+	@media (max-width: 480px) {
+		main {
+			margin-top: 80px;
+			padding: 10px;
+		}
+
+		h1 {
+			font-size: 28px;
+		}
+
+		.project-card {
+			padding: 20px;
+		}
+
+		.project-card h2 {
+			font-size: 20px;
+		}
+	}
+</style>
