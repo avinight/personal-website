@@ -1,0 +1,12 @@
+name = "personal-website"
+type = "javascript"
+compatibility_date = "2024-12-16"
+
+[build]
+command = "pnpm run build"
+cwd = "./"
+watch_paths = ["src/**/*.{ts,tsx,astro,md}"]
+
+[build.upload]
+format = "service-worker"
+dir = "./dist"
