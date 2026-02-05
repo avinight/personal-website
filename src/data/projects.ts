@@ -67,13 +67,21 @@ export const projects: Project[] = [
       { name: "Gradle", iconName: "simple-icons:gradle" },
       { name: "Android Studio", iconName: "simple-icons:androidstudio" }
     ]
-    },
+  },
   {
     title: "MIPS Breakout Assembly",
     description: "Used *MIPS Assembly* to implement a working version of the game Breakout.",
     sourceUrl: "https://github.com/avinight/breakout",
     tags: [
       { name: "Assembly", iconName: "simple-icons:gnu" }
+    ]
+  },
+  {
+    title: "Haskell Interpreter",
+    description: "Implemented a Haskell interpreter to understand functional programming.",
+    sourceUrl: "",
+    tags: [
+      { name: "Haskell", iconName: "simple-icons:haskell" }
     ]
   }
 ];

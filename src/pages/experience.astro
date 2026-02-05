@@ -4,25 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
 import { Icon } from 'astro-icon/components';
 import background from '../assets/background.svg';
-
-const experiences = [
-	{
-		role: 'Software Developer Intern',
-		org: 'Knowlecy Technologies Inc.',
-		location: 'Vancouver, BC (Remote)',
-		dates: 'January 2025 - May 2025',
-		summary: 'Built core features in a <strong>retrieval augmented generation (RAG)</strong> chat application using <strong>React</strong> and <strong>Neo4j</strong>',
-		highlights: [
-			"Eliminated <strong>10+</strong> critical rendering bottlenecks, reducing UI latency and improving application stability.",
-			"Enabled <strong>persistent state management</strong> functionality, enhancing user navigation and live feedback loops."
-		],
-		tech: [
-			{ name: 'React', iconName: 'simple-icons:react' },
-			{ name: 'TypeScript', iconName: 'simple-icons:typescript' },
-            { name: 'Neo4j', iconName: 'simple-icons:neo4j' }
-		]
-	}
-];
+import { experiences } from '../data/experiences.ts'
 ---
 
 <Layout>
