@@ -1,6 +1,6 @@
 import renderMathInElement from 'katex/contrib/auto-render';
 
-const render = (root: HTMLElement | Document = document) => {
+const render = (root = document) => {
   const target = root instanceof Document ? root.body : root;
   if (!target) return;
 
@@ -22,7 +22,7 @@ const onReady = () => {
     for (const mutation of mutations) {
       mutation.addedNodes.forEach(node => {
         if (node.nodeType === Node.ELEMENT_NODE) {
-          render(node as HTMLElement);
+          render(node);
         }
       });
     }
