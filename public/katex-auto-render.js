@@ -1,4 +1,4 @@
-import renderMathInElement from 'katex/contrib/auto-render';
+import renderMathInElement from 'https://cdn.jsdelivr.net/npm/katex@0.16.45/dist/contrib/auto-render.mjs';
 
 const render = (root = document) => {
   const target = root instanceof Document ? root.body : root;
