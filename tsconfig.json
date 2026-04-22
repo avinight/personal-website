@@ -9,6 +9,8 @@
   ],
   "compilerOptions": {
     "jsx": "preserve",
-    "types": ["astro/client"]
+    "jsxImportSource": "astro",
+    "types": ["astro/client", "astro/astro-jsx"],
+    "plugins": [{ "name": "@astrojs/ts-plugin" }]
   }
 }

@@ -1,4 +1,5 @@
 /// <reference types="astro/client" />
+/// <reference types="astro/astro-jsx" />
 
 declare module '*.png' {
 	const value: {
@@ -21,4 +22,10 @@ declare module '*.svg' {
 declare module '*?url' {
 	const src: string;
 	export default src;
+}
+
+declare global {
+	namespace JSX {
+		interface IntrinsicElements extends astroHTML.JSX.IntrinsicElements {}
+	}
 }

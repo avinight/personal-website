@@ -18,6 +18,12 @@ import 'katex/dist/katex.min.css';
 		<div id="page-content">
 			<slot />
 		</div>
+		<span class="katex-version-check" aria-hidden="true">
+			<span class="katex">
+				<span class="katex-mathml">The KaTeX stylesheet is not loaded!</span>
+				<span class="katex-version rule">KaTeX stylesheet version: </span>
+			</span>
+		</span>
 		<script type="module" src="/katex-auto-render.js"></script>
 	</body>
 </html>
@@ -93,5 +99,9 @@ import 'katex/dist/katex.min.css';
 	#page-content {
 		position: relative;
 		z-index: 2;
+	}
+
+	.katex-version-check {
+		display: none;
 	}
 </style>
