@@ -2,6 +2,7 @@
 import Header from '../../components/Header.astro';
 import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/Footer.astro';
+import 'katex/dist/katex.min.css';
 
 export async function getStaticPaths() {
   return [];
@@ -57,6 +58,7 @@ const fmt = (date: Date) =>
     </main>
   </div>
   <Footer />
+  <script is:inline type="module" src="/katex-auto-render.js"></script>
 </Layout>
 
 <style>

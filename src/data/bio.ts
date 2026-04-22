@@ -8,7 +8,10 @@ export interface Social {
 export const bio = {
   greeting: "Hi, I'm Frederick!",
 
-  aboutIntro: "Where I've worked and what I've studied.",
+  aboutIntro: [
+    "I am obsessed with health, technology, and learning. In my free time, I love going to the gym, climbing, playing instruments, and watching politics!",
+    "Below are some places I've worked and studied.",
+  ],
 
   about: [
     "I am a software engineer, mathematics enthusiast, and lifelong learner. I am passionate about building efficient and scalable systems that solve real-world problems.",

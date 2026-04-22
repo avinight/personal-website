@@ -15,7 +15,7 @@ import { bio } from '../data/bio.ts';
 			<div id="content">
 
 				<h1>About Me</h1>
-				<p class="intro">{bio.aboutIntro}</p>
+				{bio.aboutIntro.map(paragraph => <p class="intro">{paragraph}</p>)}
 
 				<!-- Experience -->
 				<h2 class="section-heading">Experience</h2>
@@ -27,9 +27,19 @@ import { bio } from '../data/bio.ts';
 							</div>
 							<section class="exp-card">
 								<div class="exp-header">
-									<div class="titles">
-										<h3>{exp.role}</h3>
-										<p class="org">{exp.org}</p>
+									<div class="exp-left">
+										{(exp.logoUrl || exp.logoIconName) && (
+											<div class="org-logo">
+												{exp.logoUrl
+													? <img src={exp.logoUrl} alt={exp.org} />
+													: <Icon name={exp.logoIconName!} />
+												}
+											</div>
+										)}
+										<div class="titles">
+											<h3>{exp.role}</h3>
+											<p class="org">{exp.org}</p>
+										</div>
 									</div>
 									<div class="meta">
 										<span class="date">{exp.dates}</span>
@@ -257,9 +267,29 @@ import { bio } from '../data/bio.ts';
 	.exp-header {
 		display: flex;
 		justify-content: space-between;
-		gap: 16px;
+		gap: 12px;
 		flex-wrap: wrap;
 		margin-bottom: 12px;
+		align-items: center;
+	}
+
+	.exp-left {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.org-logo {
+		display: flex;
+		align-items: center;
+		flex-shrink: 0;
+	}
+
+	.org-logo :global(svg),
+	.org-logo img {
+		width: 36px;
+		height: 36px;
+		object-fit: contain;
 	}
 
 	.titles h3 {

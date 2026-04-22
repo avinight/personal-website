@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
 import { Icon } from 'astro-icon/components';
 import { projects } from '../data/projects.ts';
+import 'katex/dist/katex.min.css';
 ---
 
 <Layout>
@@ -12,7 +13,7 @@ import { projects } from '../data/projects.ts';
 		<main>
 			<div id="content">
 				<h1>My Projects</h1>
-				<p class="intro">Here are some of the projects I've been working on.</p>
+				<p class="intro">Here are some of the cool projects I've been working on.</p>
 				
 				<div class="projects-grid">
 					{projects.map(project => (
@@ -64,6 +65,7 @@ import { projects } from '../data/projects.ts';
 		</main>
 	</div>
 	<Footer />
+	<script is:inline type="module" src="/katex-auto-render.js"></script>
 </Layout>
 
 <style>
@@ -115,6 +117,7 @@ import { projects } from '../data/projects.ts';
 		background: var(--surface);
 		border: 1px solid var(--border);
 		border-top: 3px solid var(--accent);
+		border-left: 3px solid var(--accent);
 		box-shadow: 0 4px 12px var(--shadow);
 		transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 		backdrop-filter: blur(10px);
@@ -125,6 +128,7 @@ import { projects } from '../data/projects.ts';
 		box-shadow: 0 8px 24px var(--shadow-strong);
 		border-color: var(--border-strong);
 		border-top-color: var(--primary);
+		border-left-color: var(--primary);
 	}
 
 	.project-card h2 {

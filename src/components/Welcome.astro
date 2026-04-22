@@ -6,7 +6,7 @@ import { Icon } from 'astro-icon/components';
 <div id="container">
 	<main>
 		<div id="hero">
-			<h1>{bio.greeting}</h1>
+			<h1 id="greeting">{bio.greeting}</h1>
 
 			<section class="box">
 				{bio.about.map(paragraph => <p>{paragraph}</p>)}
@@ -69,7 +69,7 @@ import { Icon } from 'astro-icon/components';
 	}
 
 	@keyframes typing {
-		to { width: 13ch; }
+		to { width: var(--end-width, 18ch); }
 	}
 
 	@keyframes blink {
@@ -171,3 +171,43 @@ import { Icon } from 'astro-icon/components';
 		}
 	}
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const h1 = document.getElementById('greeting');
+    if (!h1 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    function measureWidth(): number {
+      const clone = h1!.cloneNode(true) as HTMLElement;
+      Object.assign(clone.style, {
+        position: 'fixed',
+        top: '-9999px',
+        left: '0',
+        visibility: 'hidden',
+        animation: 'none',
+        width: 'max-content',
+        maxWidth: 'none',
+      });
+      document.body.appendChild(clone);
+      const w = clone.getBoundingClientRect().width;
+      document.body.removeChild(clone);
+      return w;
+    }
+
+    h1.style.setProperty('--end-width', measureWidth() + 'px');
+
+    h1.addEventListener('animationend', (e) => {
+      if ((e as AnimationEvent).animationName === 'typing') {
+        h1!.style.width = 'max-content';
+      }
+    });
+
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        h1!.style.setProperty('--end-width', measureWidth() + 'px');
+      }, 100);
+    });
+  });
+</script>

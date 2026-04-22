@@ -13,7 +13,7 @@ export const education: Education[] = [
     location: 'Toronto, ON',
     dates: '2022 - Present',
     details: [
-      'Focus on systems programming, algorithms, and theory of computation.',
+      'Focus in Computer Systems',
     ],
   },
 ];
