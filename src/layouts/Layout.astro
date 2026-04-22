@@ -1,7 +1,6 @@
 ---
 import background from '../assets/background.svg';
 import 'katex/dist/katex.min.css';
-import katexAutoRenderUrl from '../scripts/katex-auto-render.js?url';
 ---
 
 <!doctype html>
@@ -19,7 +18,7 @@ import katexAutoRenderUrl from '../scripts/katex-auto-render.js?url';
 		<div id="page-content">
 			<slot />
 		</div>
-		<script type="module" src={katexAutoRenderUrl}></script>
+		<script type="module" src="/katex-auto-render.js"></script>
 	</body>
 </html>
 
