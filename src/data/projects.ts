@@ -14,6 +14,27 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Sphinx: Succinct Perfect Hash Index on ARM",
+    description: "Ported succinct perfect hash index (Sphinx, VLDB '25) from x86 to ARM: implemented zp7 pext polyfill + vertical SIMD batching achieving *4.83×* speedup over scalar baseline on Apple M1 and *2.29×* speedup on x86.",
+    sourceUrl: "https://pdflink.to/ee0ce3de/",
+    tags: [
+      { name: "C++", iconName: "simple-icons:cplusplus" },
+      { name: "ARM", iconName: "simple-icons:arm" },
+    ]
+  },
+  {
+    title: "VoxSeG: Geometry Recovery From Gaussian Splats",
+    description: [
+      "A post-processing pipeline for 3D geometry recovery from Gaussian Splats, evaluated across 5 scenes; submitted to SIGGRAPH '26.",
+      "Optimized a $128^3$ voxel grid (\~2 million voxels) with convergence in just 50 iterations. Supervised by Prof. David Levin."
+    ],
+    sourceUrl: "https://github.com/JeremyXie123/CSC494",
+    tags: [
+      { name: "Python", iconName: "simple-icons:python" },
+      { name: "CUDA", iconName: "simple-icons:nvidia" },
+    ]
+  },
+  {
     title: "Search Engine Project",
     description: [
         "*Led* a *6-person* team for the development of a B2B real-time search engine application with full-text NLP-based query matching and semantic relevance via embedding similarity, using *agile* methodologies.",

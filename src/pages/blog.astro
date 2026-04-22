@@ -1,0 +1,166 @@
+---
+import Header from '../components/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+/*
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const fmt = (date: Date) =>
+  date.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+*/
+---
+
+<Layout>
+  <Header />
+  <div id="container">
+    <main>
+      <div id="content">
+        <h1>Blog</h1>
+        <p class="intro">Coming soon. New posts are in the works.</p>
+
+        {/*
+        <div class="post-list">
+          {posts.map(post => (
+            <a href={`/blog/${post.slug}`} class="post-card">
+              <div class="post-meta">
+                <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+                {post.data.tags && post.data.tags.map(tag => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+              <h2>{post.data.title}</h2>
+              <p>{post.data.description}</p>
+              <span class="read-more">Read →</span>
+            </a>
+          ))}
+        </div>
+        */}
+      </div>
+    </main>
+  </div>
+  <Footer />
+</Layout>
+
+<style>
+  #container {
+    min-height: 100vh;
+  }
+
+  main {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin-top: 100px;
+  }
+
+  #content {
+    max-width: 800px;
+    width: 100%;
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: 48px;
+    margin-bottom: 12px;
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .intro {
+    color: var(--text-muted);
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 48px;
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .post-card {
+    display: block;
+    text-decoration: none;
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px 16px 16px 8px;
+    box-shadow: 0 4px 12px var(--shadow);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  .post-card:hover {
+    transform: translateX(4px);
+    box-shadow: 0 8px 22px var(--shadow-strong);
+    border-left-color: var(--primary);
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  time {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    color: var(--accent-strong);
+    text-transform: lowercase;
+  }
+
+  h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--primary);
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .post-card p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0 0 16px;
+  }
+
+  .read-more {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent-strong);
+  }
+
+  @media (max-width: 480px) {
+    main {
+      margin-top: 80px;
+      padding: 10px;
+    }
+
+    h1 {
+      font-size: 32px;
+    }
+
+    .post-card {
+      padding: 20px;
+    }
+  }
+</style>

@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
@@ -17,7 +18,7 @@ import { Icon } from 'astro-icon/components';
 			<Icon name="lucide:mail" class="icon" />
 		</a>
 	</div>
-	<p>&copy; 2025 Frederick Meneses. All rights reserved.</p>
+	<p>&copy; {year} Frederick Meneses. All rights reserved.</p>
 </footer>
 
 <style>
@@ -26,14 +27,9 @@ import { Icon } from 'astro-icon/components';
         margin-top: auto;
         padding: 2rem 1rem;
         text-align: center;
-        border-top: 1px solid #e5e7eb;
-        background-color: #FDF5E6;
+        border-top: 1px solid var(--border);
+        background-color: var(--bg-base);
         transition: background-color 0.3s ease, border-color 0.3s ease;
-    }
-
-    :global(.dark) .footer {
-        background-color: #2c2c2c;
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .social-links {
@@ -44,20 +40,12 @@ import { Icon } from 'astro-icon/components';
     }
 
     .social-links a {
-        color: #6b7280;
+        color: var(--text-muted);
         transition: color 0.2s ease;
     }
 
     .social-links a:hover {
-        color: #374151;
-    }
-
-    :global(.dark) .social-links a {
-        color: #d0d0d0;
-    }
-
-    :global(.dark) .social-links a:hover {
-        color: #f5f5dc;
+        color: var(--accent);
     }
 
     .icon {
@@ -67,11 +55,7 @@ import { Icon } from 'astro-icon/components';
 
     .footer p {
         margin: 0;
-        color: #6b7280;
+        color: var(--text-muted);
         font-size: 0.875rem;
-    }
-
-    :global(.dark) .footer p {
-        color: #d0d0d0;
     }
 </style>
