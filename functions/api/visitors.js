@@ -17,10 +17,7 @@ export async function onRequest({ request, env }) {
     }
 
     const data = await res.json();
-    // counterapi.dev v2 may use 'count' or 'value'
-    const count = data.count ?? data.value ?? null;
-
-    return new Response(JSON.stringify({ count }), {
+    return new Response(JSON.stringify(data), {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (e) {
