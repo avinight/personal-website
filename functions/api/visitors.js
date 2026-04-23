@@ -17,7 +17,8 @@ export async function onRequest({ request, env }) {
     }
 
     const data = await res.json();
-    return new Response(JSON.stringify(data), {
+    const count = data?.data?.up_count ?? null;
+    return new Response(JSON.stringify({ count }), {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (e) {
