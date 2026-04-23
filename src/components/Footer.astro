@@ -34,20 +34,16 @@ const year = new Date().getFullYear();
 </footer>
 
 <script>
-  const NAMESPACE = 'frederickmeneses';
-  const KEY = 'website-visitors';
-  const BASE = 'https://api.counterapi.dev/v1';
-
   async function loadCount() {
     const el = document.getElementById('visitor-num');
     if (!el) return;
 
     try {
       const isNew = !localStorage.getItem('fm-visited');
-      const url = isNew ? `${BASE}/${NAMESPACE}/${KEY}/up` : `${BASE}/${NAMESPACE}/${KEY}`;
-      const res = await fetch(url);
+      const res = await fetch(isNew ? '/api/visitors?up=1' : '/api/visitors');
       if (!res.ok) return;
       const { count } = await res.json();
+      if (count === null) return;
       if (isNew) localStorage.setItem('fm-visited', '1');
       el.textContent = count.toLocaleString();
     } catch {

@@ -16,24 +16,11 @@ const path = Astro.url.pathname;
   const isDark = getThemePreference() === 'dark'
   document.documentElement.classList[isDark ? 'add' : 'remove']('dark')
 
-  // Theme toggle functionality
   document.addEventListener('DOMContentLoaded', function() {
-    const themeToggle = document.getElementById('theme-toggle')
-    const updateToggleText = () => {
-      if (document.documentElement.classList.contains('dark')) {
-        themeToggle.textContent = '☀️'
-      } else {
-        themeToggle.textContent = '🌙'
-      }
-    }
-    
-    updateToggleText()
-    
-    themeToggle.addEventListener('click', () => {
+    document.getElementById('theme-toggle').addEventListener('click', () => {
       const isDark = document.documentElement.classList.contains('dark')
       document.documentElement.classList.toggle('dark', !isDark)
       localStorage.setItem('theme', isDark ? 'light' : 'dark')
-      updateToggleText()
     })
   })
 </script>
@@ -52,9 +39,7 @@ const path = Astro.url.pathname;
 			<a href="/about" aria-current={path.startsWith('/about') ? 'page' : undefined}>About</a>
 			<a href="/projects" aria-current={path.startsWith('/projects') ? 'page' : undefined}>Projects</a>
 			<a href="/blog" aria-current={path.startsWith('/blog') ? 'page' : undefined}>Blog</a>
-			<button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
-				🌙
-			</button>
+			<button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme"></button>
 		</nav>
 	</div>
 	<!-- Space for future navigation items -->
@@ -155,6 +140,14 @@ const path = Astro.url.pathname;
 		cursor: pointer;
 		line-height: 1;
 		transition: transform 0.2s ease;
+	}
+
+	.theme-toggle::before {
+		content: '🌙';
+	}
+
+	:global(:root.dark) .theme-toggle::before {
+		content: '☀️';
 	}
 
 	.theme-toggle:hover {
