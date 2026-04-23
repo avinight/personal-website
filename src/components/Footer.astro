@@ -40,11 +40,11 @@ const year = new Date().getFullYear();
 
     try {
       const isNew = !localStorage.getItem('fm-visited');
+      if (isNew) localStorage.setItem('fm-visited', '1');
       const res = await fetch(isNew ? '/api/visitors?up=1' : '/api/visitors');
       if (!res.ok) return;
       const { count } = await res.json();
       if (count === null) return;
-      if (isNew) localStorage.setItem('fm-visited', '1');
       el.textContent = count.toLocaleString();
     } catch {
       // silently fail — counter is non-critical
