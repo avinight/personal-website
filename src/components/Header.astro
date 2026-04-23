@@ -5,12 +5,12 @@ const path = Astro.url.pathname;
 
 <script is:inline>
   document.addEventListener('astro:after-swap', function () {
-    if (localStorage.getItem('theme') === 'dark')
-      document.documentElement.classList.toggle('dark', true)
+    const theme = localStorage.getItem('theme') ?? 'dark'
+    document.documentElement.classList.toggle('dark', theme === 'dark')
   })
 
   const getThemePreference = () => {
-    return localStorage.getItem('theme')
+    return localStorage.getItem('theme') ?? 'dark'
   }
 
   const isDark = getThemePreference() === 'dark'

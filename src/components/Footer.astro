@@ -4,39 +4,86 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
-	<div class="social-links">
-		<a href="https://github.com/avinight" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-			<Icon name="simple-icons:github" class="icon" />
-		</a>
-		<a href="https://linkedin.com/in/friedrice123" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-			<Icon name="simple-icons:linkedin" class="icon" />
-		</a>
-		<a href="https://instagram.com/_.friedrice" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-			<Icon name="simple-icons:instagram" class="icon" />
-		</a>
-		<a href="mailto:friedricemm@gmail.com" aria-label="Email">
-			<Icon name="lucide:mail" class="icon" />
-		</a>
+	<a href="https://www.buymeacoffee.com/friedrice" target="_blank" rel="noopener noreferrer" class="matcha-btn">
+		<img src="https://img.buymeacoffee.com/button-api/?text=Buy me a matcha&emoji=🍵&slug=friedrice&button_colour=1e8525&font_colour=ffffff&font_family=Bree&outline_colour=ffffff&coffee_colour=FFDD00" alt="Buy me a matcha" />
+	</a>
+	<div class="footer-center">
+		<div class="social-links">
+			<a href="https://github.com/avinight" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+				<Icon name="simple-icons:github" class="icon" />
+			</a>
+			<a href="https://linkedin.com/in/friedrice123" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+				<Icon name="simple-icons:linkedin" class="icon" />
+			</a>
+			<a href="https://instagram.com/_.friedrice" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+				<Icon name="simple-icons:instagram" class="icon" />
+			</a>
+			<a href="mailto:friedricemm@gmail.com" aria-label="Email">
+				<Icon name="lucide:mail" class="icon" />
+			</a>
+		</div>
+		<p>&copy; {year} Frederick Meneses. All rights reserved.</p>
 	</div>
-	<p>&copy; {year} Frederick Meneses. All rights reserved.</p>
+	<div class="visitor-count">
+		<Icon name="lucide:users" class="visitors-icon" />
+		<div class="visitors-text">
+			<span id="visitor-num">—</span>
+			<span class="visitors-label">visitors</span>
+		</div>
+	</div>
 </footer>
+
+<script>
+  const NAMESPACE = 'frederickmeneses';
+  const KEY = 'website-visitors';
+  const BASE = 'https://api.counterapi.dev/v1';
+
+  async function loadCount() {
+    const el = document.getElementById('visitor-num');
+    if (!el) return;
+
+    try {
+      const isNew = !localStorage.getItem('fm-visited');
+      const url = isNew ? `${BASE}/${NAMESPACE}/${KEY}/up` : `${BASE}/${NAMESPACE}/${KEY}`;
+      const res = await fetch(url);
+      if (!res.ok) return;
+      const { count } = await res.json();
+      if (isNew) localStorage.setItem('fm-visited', '1');
+      el.textContent = count.toLocaleString();
+    } catch {
+      // silently fail — counter is non-critical
+    }
+  }
+
+  loadCount();
+</script>
 
 <style>
     .footer {
         font-family: Inter;
         margin-top: auto;
-        padding: 2rem 1rem;
-        text-align: center;
+        padding: 1.5rem 2rem;
         border-top: 1px solid var(--border);
         background-color: var(--bg-base);
         transition: background-color 0.3s ease, border-color 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .footer-center {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
     }
 
     .social-links {
         display: flex;
         justify-content: center;
         gap: 1.5rem;
-        margin-bottom: 1rem;
     }
 
     .social-links a {
@@ -57,5 +104,69 @@ const year = new Date().getFullYear();
         margin: 0;
         color: var(--text-muted);
         font-size: 0.875rem;
+    }
+
+    .visitor-count {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-shrink: 0;
+        width: 160px;
+        justify-content: flex-end;
+    }
+
+    .visitors-icon {
+        width: 1.1rem;
+        height: 1.1rem;
+        color: var(--text-muted);
+        flex-shrink: 0;
+    }
+
+    .visitors-text {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    #visitor-num {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--primary);
+        line-height: 1;
+    }
+
+    .visitors-label {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        line-height: 1.2;
+    }
+
+    .matcha-btn {
+        display: inline-block;
+        line-height: 0;
+        flex-shrink: 0;
+    }
+
+    .matcha-btn img {
+        height: 40px;
+        width: auto;
+        border-radius: 6px;
+    }
+
+    @media (max-width: 600px) {
+        .footer {
+            flex-direction: column;
+            padding: 1.5rem 1rem;
+            text-align: center;
+        }
+
+        .visitor-count {
+            width: auto;
+            justify-content: center;
+        }
+
+        .visitors-text {
+            align-items: center;
+        }
     }
 </style>

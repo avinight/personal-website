@@ -39,6 +39,16 @@ export const bio = {
     ],
   },
 
+  languages: {
+    heading: "Languages",
+    languages: [
+      { name: "English", iconName: "twemoji:flag-united-states" },
+      { name: "French",  iconName: "twemoji:flag-france"        },
+      { name: "Tagalog", iconName: "twemoji:flag-philippines"   },
+      { name: "Japanese", iconName: "twemoji:flag-japan"        },
+    ],
+  },
+
   socials: [
     { platform: "Linktree", url: "https://linktr.ee/_.friedrice",                    iconName: "simple-icons:linktree", username: "_.friedrice"  },
     { platform: "Devpost",  url: "https://devpost.com/avinight",                      iconName: "simple-icons:devpost",  username: "avinight"     },

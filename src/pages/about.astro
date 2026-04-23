@@ -256,6 +256,8 @@ import { bio } from '../data/bio.ts';
 		box-shadow: 0 4px 12px var(--shadow);
 		backdrop-filter: blur(10px);
 		transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+		will-change: transform;
+		transform: translateZ(0);
 	}
 
 	.timeline-entry:hover .exp-card {

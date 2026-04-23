@@ -22,6 +22,18 @@ import { Icon } from 'astro-icon/components';
 					))}
 				</div>
 			</section>
+
+			<section class="box">
+				<h2>{bio.languages.heading}</h2>
+				<div class="icon-grid">
+					{bio.languages.languages.map(lang => (
+						<span class="tech-icon" title={lang.name} aria-label={lang.name}>
+							<Icon name={lang.iconName} />
+						</span>
+					))}
+				</div>
+
+			</section>
 		</div>
 	</main>
 </div>
