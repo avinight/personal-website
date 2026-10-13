@@ -424,7 +424,7 @@ viewFooter model =
         , div [ class "footer-center" ]
             [ div [ class "social-links" ]
                 [ social "https://github.com/avinight" "GitHub" "simple-icons:github"
-                , social "https://linkedin.com/in/friedrice123" "LinkedIn" "simple-icons:linkedin"
+                , social "https://www.linkedin.com/in/frederick-meneses/" "LinkedIn" "simple-icons:linkedin"
                 , social "https://instagram.com/_.friedrice" "Instagram" "simple-icons:instagram"
                 , a [ href "mailto:friedricemm@gmail.com", attribute "aria-label" "Email" ]
                     [ Icon.view "lucide:mail" ]
