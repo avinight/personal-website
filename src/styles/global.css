@@ -1,0 +1,226 @@
+:root {
+  --bg-base: #f8edd9;
+  --surface: rgba(255, 249, 238, 0.92);
+  --border: rgba(192, 98, 58, 0.25);
+  --border-strong: rgba(192, 98, 58, 0.5);
+  --text: #3d2817;
+  --text-muted: #6b5444;
+  --primary: #c0623a;
+  --primary-strong: #9a4526;
+  --primary-soft: rgba(192, 98, 58, 0.12);
+  --primary-soft-hover: rgba(192, 98, 58, 0.22);
+  --accent: #2e7d7e;
+  --accent-strong: #205657;
+  --accent-soft: rgba(46, 125, 126, 0.14);
+  --accent-soft-hover: rgba(46, 125, 126, 0.24);
+  --shadow: rgba(102, 52, 25, 0.12);
+  --shadow-strong: rgba(102, 52, 25, 0.22);
+}
+
+:root.dark {
+  --bg-base: #1c2a3a;
+  --surface: rgba(38, 52, 72, 0.88);
+  --border: rgba(229, 138, 91, 0.28);
+  --border-strong: rgba(229, 138, 91, 0.55);
+  --text: #efe4d3;
+  --text-muted: #bcad98;
+  --primary: #e58a5b;
+  --primary-strong: #f2a581;
+  --primary-soft: rgba(229, 138, 91, 0.15);
+  --primary-soft-hover: rgba(229, 138, 91, 0.28);
+  --accent: #7fc8c9;
+  --accent-strong: #a3dee0;
+  --accent-soft: rgba(127, 200, 201, 0.16);
+  --accent-soft-hover: rgba(127, 200, 201, 0.28);
+  --shadow: rgba(0, 0, 0, 0.4);
+  --shadow-strong: rgba(0, 0, 0, 0.55);
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-family:
+    Inter, Roboto, "Helvetica Neue", "Arial Nova", "Nimbus Sans", Arial,
+    sans-serif;
+}
+
+#bg-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  object-fit: cover;
+}
+
+#bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: var(--bg-base);
+  opacity: 0.88;
+}
+
+#page-content {
+  position: relative;
+  z-index: 2;
+}
+
+.katex-version-check {
+  display: none;
+}
+
+/* Shared card look for boxes, timeline entries, projects, posts and links. */
+:root {
+  --card-radius: 18px;
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --card-shadow: 0 1px 2px var(--shadow), 0 14px 34px -20px var(--shadow-strong);
+  --card-shadow-hover: 0 2px 6px var(--shadow), 0 24px 48px -22px var(--shadow-strong);
+}
+
+:where(.box, .exp-card, .project-card, .post-card, .anime-card, .social-card) {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  box-shadow:
+    var(--card-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+  transition:
+    transform 0.35s var(--ease-spring),
+    box-shadow 0.35s var(--ease-spring),
+    border-color 0.25s ease;
+}
+
+/* A thin terracotta-to-teal line that lights up along the top on hover. */
+:where(.box, .exp-card, .project-card, .post-card, .anime-card, .social-card)::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 22px;
+  right: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+:where(.exp-card, .project-card, .post-card, .anime-card, .social-card):hover,
+:where(.box):hover {
+  transform: translateY(-3px);
+  border-color: var(--border-strong);
+  box-shadow:
+    var(--card-shadow-hover),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+:where(.box, .exp-card, .project-card, .post-card, .anime-card, .social-card):hover::before {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.box, .exp-card, .project-card, .post-card, .anime-card, .social-card):hover {
+    transform: none;
+  }
+}
+
+/* Icons exported to public/icons; single-colour ones are masks over currentColor. */
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  background-color: currentColor;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+
+.icon.icon-color {
+  background: none;
+  object-fit: contain;
+}
+
+/* Each page fades and rises in when you navigate to it. */
+.page-frame > * {
+  animation: page-enter 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-frame > * {
+    animation: none;
+  }
+}
+
+katex-math {
+  display: inline;
+}
+
+post-body {
+  display: block;
+}
+
+/* The turning wireframes behind every page (Backdrop.elm). */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  fill: var(--accent);
+  stroke: var(--accent);
+  opacity: 0.2;
+}
+
+/* Kepler's nest alternates the two theme colours from the outside in. */
+.backdrop .solid-primary {
+  fill: var(--primary);
+  stroke: var(--primary);
+}
+
+.backdrop line {
+  stroke-width: 1.25px;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+:root.dark .backdrop {
+  opacity: 0.16;
+}
+
+/* Links written as [text](url) in the data files (Rich.elm). */
+.rich-link {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--primary-soft-hover);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s ease, color 0.2s ease;
+}
+
+.rich-link:hover {
+  color: var(--primary-strong);
+  text-decoration-color: currentColor;
+}

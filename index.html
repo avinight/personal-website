@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Frederick Meneses - Software Engineer</title>
+    <meta name="description" content="Frederick Meneses is a software engineer and computer science student at the University of Toronto." />
+    <meta property="og:title" content="Frederick Meneses - Software Engineer" />
+    <meta property="og:description" content="Projects, experience and writing by Frederick Meneses." />
+    <meta property="og:image" content="/bucchi.png" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <script>
+      // Set the theme before the page paints so it doesn't flash.
+      try {
+        document.documentElement.classList.toggle('dark', (localStorage.getItem('theme') ?? 'dark') === 'dark');
+      } catch {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <noscript>This site needs JavaScript to run.</noscript>
+  </body>
+</html>

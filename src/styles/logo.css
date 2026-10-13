@@ -1,0 +1,43 @@
+.logo {
+  display: flex;
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.logo-art {
+  width: clamp(96px, 18vw, 150px);
+  height: clamp(96px, 18vw, 150px);
+  overflow: visible;
+  filter: drop-shadow(0 4px 10px var(--shadow));
+  /* Pointer offsets are measured on the button (see Logo.elm). */
+  pointer-events: none;
+}
+
+.logo:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
+.shard {
+  transition: fill 0.4s ease;
+}
+
+.shard-0 {
+  fill: var(--primary);
+}
+.shard-1 {
+  fill: var(--accent);
+}
+.shard-2 {
+  fill: var(--primary-strong);
+}
+.shard-3 {
+  fill: var(--accent-strong);
+}
