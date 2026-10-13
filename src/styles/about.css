@@ -149,19 +149,13 @@
   .org-logo {
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-shrink: 0;
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 1px 3px var(--shadow);
   }
 
   .org-logo .icon,
   .org-logo img {
-    width: 34px;
-    height: 34px;
+    width: 40px;
+    height: 40px;
     object-fit: contain;
   }
 

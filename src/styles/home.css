@@ -79,23 +79,15 @@
 
   .tech-icon {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: clamp(42px, 6vw, 50px);
-    height: clamp(42px, 6vw, 50px);
-    border-radius: 14px;
-    background: var(--primary-soft);
     color: var(--text-muted);
     transition:
       color 0.2s ease,
-      background 0.2s ease,
       transform 0.35s var(--ease-spring);
   }
 
   .tech-icon:hover {
     color: var(--primary);
-    background: var(--primary-soft-hover);
-    transform: translateY(-3px) scale(1.06);
+    transform: translateY(-3px) scale(1.15);
   }
 
   .tech-icon .icon {
