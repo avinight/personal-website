@@ -202,3 +202,19 @@ post-body {
 :root.dark .backdrop {
   opacity: 0.16;
 }
+
+/* Links written as [text](url) in the data files (Rich.elm). */
+.rich-link {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--primary-soft-hover);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s ease, color 0.2s ease;
+}
+
+.rich-link:hover {
+  color: var(--primary-strong);
+  text-decoration-color: currentColor;
+}
