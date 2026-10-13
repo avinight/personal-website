@@ -1,8 +1,5 @@
 .logo {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
   flex-shrink: 0;
   padding: 0;
   border: none;
@@ -18,11 +15,8 @@
   height: clamp(96px, 18vw, 150px);
   overflow: visible;
   filter: drop-shadow(0 4px 10px var(--shadow));
-  transition: transform 0.3s ease;
-}
-
-.logo:hover .logo-art {
-  transform: rotate(-4deg) scale(1.04);
+  /* Pointer offsets are measured on the button (see Logo.elm). */
+  pointer-events: none;
 }
 
 .logo:focus-visible {
@@ -46,30 +40,4 @@
 }
 .shard-3 {
   fill: var(--accent-strong);
-}
-
-.logo-caption {
-  min-height: 1.2em;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.logo-label {
-  display: inline-block;
-  animation: logo-label-in 0.5s ease both;
-}
-
-@keyframes logo-label-in {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .logo-label {
-    animation: none;
-  }
 }

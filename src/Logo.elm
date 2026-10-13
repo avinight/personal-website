@@ -2,7 +2,9 @@ module Logo exposing (Model, Msg, init, subscriptions, update, view)
 
 {-| The animated logo on the home page: a mosaic of small triangular shards in
 the site's terracotta and teal palette. The shards fly between pictures of
-things Frederick likes, one after another, and a click skips to the next one.
+things Frederick likes, one after another. Shards scatter away from the
+pointer, the cycle pauses while it's over the logo, and a click skips to the
+next picture.
 
 Pictures are drawn as text below. Each character is one grid cell:
 
@@ -16,7 +18,7 @@ import Browser.Events
 import Html exposing (Html)
 import Html.Attributes as HA
 import Html.Events
-import Html.Keyed
+import Json.Decode as Decode
 import Svg exposing (Svg)
 import Svg.Attributes as SA
 
@@ -41,16 +43,7 @@ type alias Picture =
 
 pictures : List Picture
 pictures =
-    [ fromArt "Frederick"
-        [ "◢█████◤"
-        , "██....."
-        , "██....."
-        , "████◤.."
-        , "██....."
-        , "██....."
-        , "██....."
-        ]
-    , fromArt "fried rice"
+    [ fromArt "fried rice"
         [ ".....◢◤."
         , "....◢◤.."
         , ".◢███◣.."
@@ -204,6 +197,9 @@ type alias Model =
     , to : List Pose
     , elapsed : Float
     , reducedMotion : Bool
+    , pointer : Maybe ( Float, Float )
+    , cursor : ( Float, Float )
+    , presence : Float
     }
 
 
@@ -217,10 +213,26 @@ init reducedMotion =
             posesFor 0 scattered
     in
     if reducedMotion then
-        { index = 0, from = target, to = target, elapsed = settled, reducedMotion = True }
+        { index = 0
+        , from = target
+        , to = target
+        , elapsed = settled
+        , reducedMotion = True
+        , pointer = Nothing
+        , cursor = ( 0, 0 )
+        , presence = 0
+        }
 
     else
-        { index = 0, from = scattered, to = target, elapsed = 0, reducedMotion = False }
+        { index = 0
+        , from = scattered
+        , to = target
+        , elapsed = 0
+        , reducedMotion = False
+        , pointer = Nothing
+        , cursor = ( 0, 0 )
+        , presence = 0
+        }
 
 
 scattered : List Pose
@@ -286,25 +298,80 @@ shortestTurn a b =
 type Msg
     = Frame Float
     | Next
+    | PointerMoved Float Float Float Float
+    | PointerLeft
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        Frame delta ->
+        Frame rawDelta ->
             let
+                -- Long gaps (a background tab) shouldn't skip the animation.
+                delta =
+                    min rawDelta 50
+
                 elapsed =
-                    -- Long gaps (a background tab) shouldn't skip the animation.
-                    model.elapsed + min delta 50
+                    case model.pointer of
+                        -- Hold the current picture while someone plays with it.
+                        Just _ ->
+                            min (model.elapsed + delta) settled
+
+                        Nothing ->
+                            model.elapsed + delta
+
+                follow =
+                    1 - e ^ (-delta / 70)
+
+                ( cx, cy ) =
+                    model.cursor
+
+                ( tx, ty, wanted ) =
+                    case model.pointer of
+                        Just ( px, py ) ->
+                            ( px, py, 1 )
+
+                        Nothing ->
+                            ( cx, cy, 0 )
+
+                moved =
+                    { model
+                        | elapsed = elapsed
+                        , cursor = ( lerp cx tx follow, lerp cy ty follow )
+                        , presence = lerp model.presence wanted (1 - e ^ (-delta / 160))
+                    }
             in
             if elapsed >= settled + hold then
-                advance model
+                advance moved
 
             else
-                { model | elapsed = elapsed }
+                moved
 
         Next ->
             advance model
+
+        PointerMoved offsetX offsetY width height ->
+            if width <= 0 || height <= 0 then
+                model
+
+            else
+                let
+                    point =
+                        ( offsetX / width * 10 - 5, offsetY / height * 10 - 5 )
+                in
+                { model
+                    | pointer = Just point
+                    , cursor =
+                        -- Start from the pointer when it first arrives.
+                        if model.presence < 0.01 then
+                            point
+
+                        else
+                            model.cursor
+                }
+
+        PointerLeft ->
+            { model | pointer = Nothing }
 
 
 advance : Model -> Model
@@ -337,6 +404,45 @@ subscriptions model =
 
 
 -- ANIMATION
+
+
+{-| Shards near the pointer are pushed outward and tilted, more strongly the
+closer they are.
+-}
+repel : Model -> Pose -> Pose
+repel model pose =
+    let
+        ( cx, cy ) =
+            model.cursor
+
+        dx =
+            pose.x - cx
+
+        dy =
+            pose.y - cy
+
+        dist =
+            sqrt (dx * dx + dy * dy)
+
+        reach =
+            2.4
+
+        push =
+            model.presence * ((max 0 (1 - dist / reach)) ^ 2) * 1.5
+    in
+    if push <= 0.001 then
+        pose
+
+    else if dist < 0.0001 then
+        { pose | y = pose.y - push, rot = pose.rot + push * 40 }
+
+    else
+        { pose
+            | x = pose.x + dx / dist * push
+            , y = pose.y + dy / dist * push
+            , rot = pose.rot + push * 40
+        }
+
 
 
 currentPoses : Model -> List Pose
@@ -401,26 +507,34 @@ easeInOutBack t =
 
 view : Model -> Html Msg
 view model =
-    let
-        label =
-            (pictureAt model.index).label
-    in
     Html.button
         [ HA.class "logo"
         , HA.type_ "button"
-        , HA.attribute "aria-label" ("Logo showing " ++ label ++ ". Press for the next picture.")
+        , HA.attribute "aria-label"
+            ("Logo showing " ++ (pictureAt model.index).label ++ ". Press for the next picture.")
         , Html.Events.onClick Next
+        , Html.Events.on "pointermove" pointerDecoder
+        , Html.Events.on "pointerleave" (Decode.succeed PointerLeft)
         ]
         [ Svg.svg
             [ SA.viewBox "-5 -5 10 10"
             , SA.class "logo-art"
             , HA.attribute "aria-hidden" "true"
             ]
-            (List.indexedMap viewShard (currentPoses model))
-        , Html.Keyed.node "span"
-            [ HA.class "logo-caption" ]
-            [ ( label, Html.span [ HA.class "logo-label" ] [ Html.text label ] ) ]
+            (List.indexedMap viewShard (List.map (repel model) (currentPoses model)))
         ]
+
+
+{-| The SVG ignores the pointer (see logo.css), so offsets are measured
+against the button, which is exactly the size of the drawing.
+-}
+pointerDecoder : Decode.Decoder Msg
+pointerDecoder =
+    Decode.map4 PointerMoved
+        (Decode.field "offsetX" Decode.float)
+        (Decode.field "offsetY" Decode.float)
+        (Decode.at [ "currentTarget", "clientWidth" ] Decode.float)
+        (Decode.at [ "currentTarget", "clientHeight" ] Decode.float)
 
 
 viewShard : Int -> Pose -> Svg msg
