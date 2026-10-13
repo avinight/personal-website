@@ -362,7 +362,9 @@ viewHeader model =
                     , rel "noopener noreferrer"
                     , attribute "aria-label" "GitHub profile"
                     ]
-                    [ img [ src "/bucchi.png", alt "Profile Picture", class "avatar-img" ] [] ]
+                    [ img [ src "/bucchi.png", alt "Profile Picture", class "avatar-img" ] []
+                    , span [ class "avatar-badge" ] [ Icon.view "simple-icons:github" ]
+                    ]
                 , span [ class "profile-name" ] [ text "Frederick Meneses" ]
                 ]
             , nav [ class "header-nav" ]
