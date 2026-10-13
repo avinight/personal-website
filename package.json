@@ -22,5 +22,12 @@
     "marked-katex-extension": "^5.1.13",
     "vite": "^7.3.7",
     "vite-plugin-elm": "^3.0.1"
+  },
+  "packageManager": "pnpm@10.34.7",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "elm",
+      "esbuild"
+    ]
   }
 }
