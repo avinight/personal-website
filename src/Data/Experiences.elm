@@ -24,9 +24,17 @@ experiences =
     [ { role = "Software Engineer Intern"
       , org = "TD Bank"
       , location = "Toronto, ON"
-      , dates = "May 2026 - Present"
+      , dates = "May 2026 - August 2026"
       , summary = "Backend/DevOps"
-      , highlights = []
+      , highlights = 
+                [ "Resolved “Argument list too long” CI/CD failures blocking deployments across multiple LoBs by redesigning the GitHub Actions env payload from 𝑂(𝑛2) to 𝑂(𝑛), bringing it under the 128 KiB env-var limit."
+                , """Built an interactive Power BI audit sourced from Datadog, surfacing per-LoB CI/CD health (active app codes, build/
+                job success rates, median deploy time, prod deploy volume) to support an active audit, reviewed at the VP/SVP level."""
+                , """Refactored a YAML→Jenkins config seeding plugin, consolidating 4 duplicated, tightly coupled flows into one testable
+                module designed to serve CI/CD for 3750+ app codes, removing config duplication across flows."""
+                , "Audited cross-team production infrastructure dependencies to assess compliance risks and unblock environment migration."
+                , "Built an agentic mobile banking PoC with shoulder-surfing/camera detection and per-device public-key authentication."
+                ]
       , tech = [ Named "Python" "simple-icons:python" ]
       , logoUrl = Just "/logos/Toronto-Dominion_Bank_logo.svg"
       }
