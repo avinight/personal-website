@@ -248,17 +248,16 @@ view : Model -> Browser.Document Msg
 view model =
     { title = title model.route
     , body =
-        [ img [ id "bg-image", src "/background.svg", alt "", attribute "fetchpriority" "high" ] []
-        , div [ id "bg-overlay" ] []
-        , Backdrop.view model.backdrop
-        , div [ id "page-content" ]
-            [ viewHeader model
-            , Html.Keyed.node "div"
-                [ class "page-frame" ]
-                [ ( pageKey model.route, viewPage model ) ]
-            , viewFooter model
+            [ div [ id "bg-overlay" ] []
+            , Backdrop.view model.backdrop
+            , div [ id "page-content" ]
+                [ viewHeader model
+                , Html.Keyed.node "div"
+                    [ class "page-frame" ]
+                    [ ( pageKey model.route, viewPage model ) ]
+                , viewFooter model
+                ]
             ]
-        ]
     }
 
 

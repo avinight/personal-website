@@ -15,7 +15,7 @@ education =
     [ { degree = "Honours Bachelor of Science — Computer Science"
       , institution = "University of Toronto"
       , location = "Toronto, ON"
-      , dates = "2022 - Present"
+      , dates = "2022 - 2026"
       , details = [ "Focus in Computer Systems" ]
       }
     ]

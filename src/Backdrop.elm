@@ -203,6 +203,7 @@ view model =
     in
     Svg.svg
         [ SA.class "backdrop"
+        -- , SA.viewBox "-1.5 -1.5 3 3"
         , SA.viewBox "-1.25 -1.25 2.5 2.5"
         , SA.preserveAspectRatio "xMidYMid slice"
         , HA.attribute "aria-hidden" "true"
@@ -236,7 +237,8 @@ viewCorner point =
     Svg.circle
         [ SA.cx (String.fromFloat point.x)
         , SA.cy (String.fromFloat point.y)
-        , SA.r "0.012"
+        , SA.r "0.001"
+        , SA.strokeWidth "0.09"
         , SA.fillOpacity (String.fromFloat (depthFade point.z))
         ]
         []
