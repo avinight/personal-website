@@ -408,18 +408,19 @@ viewFooter model =
                 [ Icon.view icon ]
     in
     footer [ class "footer" ]
-        [ a
-            [ href "https://www.buymeacoffee.com/friedrice"
-            , target "_blank"
-            , rel "noopener noreferrer"
-            , class "matcha-btn"
-            ]
-            [ img
-                [ src "https://img.buymeacoffee.com/button-api/?text=Buy me a matcha&emoji=🍵&slug=friedrice&button_colour=1e8525&font_colour=ffffff&font_family=Bree&outline_colour=ffffff&coffee_colour=FFDD00"
-                , alt "Buy me a matcha"
-                ]
-                []
-            ]
+        [ div [] []
+        -- [ a
+        --     [ href "https://www.buymeacoffee.com/friedrice"
+        --     , target "_blank"
+        --     , rel "noopener noreferrer"
+        --     , class "matcha-btn"
+        --     ]
+        --     [ img
+        --         [ src "https://img.buymeacoffee.com/button-api/?text=Buy me a matcha&emoji=🍵&slug=friedrice&button_colour=1e8525&font_colour=ffffff&font_family=Bree&outline_colour=ffffff&coffee_colour=FFDD00"
+        --         , alt "Buy me a matcha"
+        --         ]
+        --         []
+        --     ]
         , div [ class "footer-center" ]
             [ div [ class "social-links" ]
                 [ social "https://github.com/avinight" "GitHub" "simple-icons:github"
