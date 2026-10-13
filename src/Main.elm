@@ -6,9 +6,10 @@ import Browser.Dom
 import Browser.Navigation as Nav
 import Data.Bio as Bio
 import Html exposing (Html, a, button, div, footer, header, img, nav, p, span, text)
-import Html.Attributes exposing (alt, attribute, class, href, id, rel, src, target)
+import Html.Attributes exposing (alt, attribute, class, height, href, id, rel, src, target, width)
 import Html.Events exposing (onClick)
 import Html.Keyed
+import Html.Lazy exposing (lazy, lazy2)
 import Http
 import Icon
 import Json.Decode as Decode
@@ -251,11 +252,11 @@ view model =
             [ div [ id "bg-overlay" ] []
             , Backdrop.view model.backdrop
             , div [ id "page-content" ]
-                [ viewHeader model
+                [ lazy2 viewHeader model.route model.theme
                 , Html.Keyed.node "div"
                     [ class "page-frame" ]
                     [ ( pageKey model.route, viewPage model ) ]
-                , viewFooter model
+                , lazy2 viewFooter model.year model.visitors
                 ]
             ]
     }
@@ -311,6 +312,9 @@ pageKey route =
             "not-found"
 
 
+{-| The backdrop redraws the page every frame, so everything that isn't
+animated is wrapped in `lazy` and only rebuilt when its inputs change.
+-}
 viewPage : Model -> Html Msg
 viewPage model =
     case model.route of
@@ -320,6 +324,17 @@ viewPage model =
                 , logo = Html.map LogoMsg (Logo.view model.logo)
                 }
 
+        _ ->
+            lazy2 viewStaticPage model.route model.posts
+
+
+viewStaticPage : Route -> List Post -> Html Msg
+viewStaticPage route posts =
+    case route of
+        Route.Home ->
+            -- Drawn by viewPage, since the logo is animated.
+            text ""
+
         Route.About ->
             Page.About.view
 
@@ -327,17 +342,17 @@ viewPage model =
             Page.Projects.view
 
         Route.Blog ->
-            Page.Blog.viewList model.posts
+            Page.Blog.viewList posts
 
         Route.Post slug ->
-            Page.Blog.viewPost (Post.find slug model.posts)
+            Page.Blog.viewPost (Post.find slug posts)
 
         Route.NotFound ->
             Page.NotFound.view
 
 
-viewHeader : Model -> Html Msg
-viewHeader model =
+viewHeader : Route -> Theme -> Html Msg
+viewHeader route theme =
     let
         navLink path label isCurrent =
             a
@@ -352,7 +367,7 @@ viewHeader model =
                 [ text label ]
 
         isBlog =
-            case model.route of
+            case route of
                 Route.Blog ->
                     True
 
@@ -372,15 +387,15 @@ viewHeader model =
                     , rel "noopener noreferrer"
                     , attribute "aria-label" "GitHub profile"
                     ]
-                    [ img [ src "/bucchi.png", alt "Profile Picture", class "avatar-img" ] []
+                    [ img [ src "/bucchi-avatar.webp", alt "Profile Picture", class "avatar-img", width 50, height 50 ] []
                     , span [ class "avatar-badge" ] [ Icon.view "simple-icons:github" ]
                     ]
                 , span [ class "profile-name" ] [ text "Frederick Meneses" ]
                 ]
             , nav [ class "header-nav" ]
-                [ navLink "/" "Home" (model.route == Route.Home)
-                , navLink "/about" "About" (model.route == Route.About)
-                , navLink "/projects" "Projects" (model.route == Route.Projects)
+                [ navLink "/" "Home" (route == Route.Home)
+                , navLink "/about" "About" (route == Route.About)
+                , navLink "/projects" "Projects" (route == Route.Projects)
                 , navLink "/blog" "Blog" isBlog
                 , button
                     [ class "theme-toggle"
@@ -388,7 +403,7 @@ viewHeader model =
                     , onClick ToggleTheme
                     ]
                     [ text
-                        (if model.theme == Dark then
+                        (if theme == Dark then
                             "☀️"
 
                          else
@@ -400,8 +415,8 @@ viewHeader model =
         ]
 
 
-viewFooter : Model -> Html Msg
-viewFooter model =
+viewFooter : Int -> Maybe Int -> Html Msg
+viewFooter year visitors =
     let
         social url label icon =
             a [ href url, target "_blank", rel "noopener noreferrer", attribute "aria-label" label ]
@@ -429,13 +444,13 @@ viewFooter model =
                 , a [ href "mailto:friedricemm@gmail.com", attribute "aria-label" "Email" ]
                     [ Icon.view "lucide:mail" ]
                 ]
-            , p [] [ text ("© " ++ String.fromInt model.year ++ " Frederick Meneses. All rights reserved.") ]
+            , p [] [ text ("© " ++ String.fromInt year ++ " Frederick Meneses. All rights reserved.") ]
             ]
         , div [ class "visitor-count" ]
             [ Icon.viewWith "visitors-icon" "lucide:users"
             , div [ class "visitors-text" ]
                 [ span [ id "visitor-num" ]
-                    [ text (Maybe.withDefault "—" (Maybe.map formatCount model.visitors)) ]
+                    [ text (Maybe.withDefault "—" (Maybe.map formatCount visitors)) ]
                 , span [ class "visitors-label" ] [ text "visitors" ]
                 ]
             ]

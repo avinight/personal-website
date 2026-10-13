@@ -18,6 +18,7 @@ import Browser.Events
 import Html exposing (Html)
 import Html.Attributes as HA
 import Html.Events
+import Html.Lazy
 import Json.Decode as Decode
 import Svg exposing (Svg)
 import Svg.Attributes as SA
@@ -521,8 +522,26 @@ view model =
             , SA.class "logo-art"
             , HA.attribute "aria-hidden" "true"
             ]
-            (List.indexedMap viewShard (List.map (repel model) (currentPoses model)))
+            (if isStill model then
+                [ Html.Lazy.lazy viewShards model.to ]
+
+             else
+                List.indexedMap viewShard (List.map (repel model) (currentPoses model))
+            )
         ]
+
+
+{-| Between pictures, with nobody pointing at it, the logo doesn't move, so
+it is drawn once and left alone until the next picture.
+-}
+isStill : Model -> Bool
+isStill model =
+    model.elapsed >= settled && model.presence < 0.0005
+
+
+viewShards : List Pose -> Svg msg
+viewShards poses =
+    Svg.g [] (List.indexedMap viewShard poses)
 
 
 {-| The SVG ignores the pointer (see logo.css), so offsets are measured

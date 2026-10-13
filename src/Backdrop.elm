@@ -275,12 +275,20 @@ mouseDecoder =
 -- VIEW
 
 
-{-| Turn a corner of a solid by its own spin plus the lean toward the mouse,
-then project it with a little perspective. `z` points at the viewer and is
-returned relative to the solid's size, so depth fading works at any size.
+{-| How a solid is turned this frame: its own spin plus the lean toward the
+mouse. Worked out once per solid rather than once per corner.
 -}
-place : Model -> Solid -> Vec -> Vec
-place model shape v =
+type alias Turn =
+    { cosYaw : Float
+    , sinYaw : Float
+    , cosPitch : Float
+    , sinPitch : Float
+    , size : Float
+    }
+
+
+turnOf : Model -> Solid -> Turn
+turnOf model shape =
     let
         ( tx, ty ) =
             model.tilt
@@ -290,23 +298,38 @@ place model shape v =
 
         pitch =
             model.angle * shape.pitchSpeed + shape.offset + ty * 0.35
+    in
+    { cosYaw = cos yaw
+    , sinYaw = sin yaw
+    , cosPitch = cos pitch
+    , sinPitch = sin pitch
+    , size = shape.size
+    }
 
+
+{-| Turn a corner, then project it with a little perspective. `z` points at
+the viewer and is returned relative to the solid's size, so depth fading
+works at any size.
+-}
+place : Turn -> Vec -> Vec
+place turn v =
+    let
         x1 =
-            v.x * cos yaw + v.z * sin yaw
+            v.x * turn.cosYaw + v.z * turn.sinYaw
 
         z1 =
-            v.z * cos yaw - v.x * sin yaw
+            v.z * turn.cosYaw - v.x * turn.sinYaw
 
         y2 =
-            v.y * cos pitch - z1 * sin pitch
+            v.y * turn.cosPitch - z1 * turn.sinPitch
 
         z2 =
-            v.y * sin pitch + z1 * cos pitch
+            v.y * turn.sinPitch + z1 * turn.cosPitch
 
         perspective =
-            4 / (4 - z2 * shape.size)
+            4 / (4 - z2 * turn.size)
     in
-    { x = x1 * shape.size * perspective, y = y2 * shape.size * perspective, z = z2 }
+    { x = x1 * turn.size * perspective, y = y2 * turn.size * perspective, z = z2 }
 
 
 view : Model -> Html msg
@@ -324,7 +347,7 @@ viewSolid : Model -> Solid -> Svg msg
 viewSolid model shape =
     let
         points =
-            Array.fromList (List.map (place model shape) shape.corners)
+            Array.fromList (List.map (place (turnOf model shape)) shape.corners)
     in
     Svg.g [ SA.class ("solid solid-" ++ shape.tone) ]
         (List.map (viewEdge points) shape.edges
@@ -339,11 +362,11 @@ viewEdge points ( i, j ) =
     case ( Array.get i points, Array.get j points ) of
         ( Just a, Just b ) ->
             Svg.line
-                [ SA.x1 (String.fromFloat a.x)
-                , SA.y1 (String.fromFloat a.y)
-                , SA.x2 (String.fromFloat b.x)
-                , SA.y2 (String.fromFloat b.y)
-                , SA.strokeOpacity (String.fromFloat (depthFade ((a.z + b.z) / 2)))
+                [ SA.x1 (coord a.x)
+                , SA.y1 (coord a.y)
+                , SA.x2 (coord b.x)
+                , SA.y2 (coord b.y)
+                , SA.strokeOpacity (coord (depthFade ((a.z + b.z) / 2)))
                 ]
                 []
 
@@ -354,13 +377,21 @@ viewEdge points ( i, j ) =
 viewCorner : Vec -> Svg msg
 viewCorner point =
     Svg.circle
-        [ SA.cx (String.fromFloat point.x)
-        , SA.cy (String.fromFloat point.y)
+        [ SA.cx (coord point.x)
+        , SA.cy (coord point.y)
         , SA.r "0.001"
         , SA.strokeWidth "0.09"
-        , SA.fillOpacity (String.fromFloat (depthFade point.z))
+        , SA.fillOpacity (coord (depthFade point.z))
         ]
         []
+
+
+{-| Four decimals is a fraction of a pixel on any screen, and keeps the
+attributes the browser parses every frame short.
+-}
+coord : Float -> String
+coord n =
+    String.fromFloat (toFloat (round (n * 10000)) / 10000)
 
 
 depthFade : Float -> Float

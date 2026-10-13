@@ -191,6 +191,10 @@ post-body {
   fill: var(--accent);
   stroke: var(--accent);
   opacity: 0.2;
+  /* Redrawn every frame: keep it on its own layer so the page on top of it
+     isn't repainted along with it. */
+  contain: strict;
+  will-change: transform;
 }
 
 /* Kepler's nest alternates the two theme colours from the outside in. */

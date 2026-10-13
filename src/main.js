@@ -1,4 +1,3 @@
-import katex from 'katex';
 import 'katex/dist/katex.min.css';
 import posts from 'virtual:blog-posts';
 import { Elm } from './Main.elm';
@@ -11,6 +10,11 @@ import './styles/about.css';
 import './styles/projects.css';
 import './styles/blog.css';
 import './styles/post.css';
+
+// KaTeX is only needed on the few pages with inline math, so it is loaded
+// the first time a <katex-math> element appears rather than with the site.
+let katex;
+const loadKatex = () => (katex ??= import('katex').then((m) => m.default));
 
 // <katex-math tex="..."> renders inline math written as $...$ in the data files.
 customElements.define(
@@ -28,7 +32,10 @@ customElements.define(
 
     render() {
       const tex = this.getAttribute('tex');
-      if (tex !== null) katex.render(tex, this, { throwOnError: false });
+      if (tex === null) return;
+      loadKatex().then((k) => {
+        if (this.getAttribute('tex') === tex) k.render(tex, this, { throwOnError: false });
+      });
     }
   },
 );
