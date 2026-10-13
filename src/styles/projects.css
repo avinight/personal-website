@@ -43,25 +43,6 @@
     display: flex;
     flex-direction: column;
     padding: 28px;
-    border-radius: 16px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-top: 3px solid var(--accent);
-    border-left: 3px solid var(--accent);
-    box-shadow: 0 4px 12px var(--shadow);
-    transition:
-      transform 0.25s ease,
-      box-shadow 0.25s ease,
-      border-color 0.25s ease;
-    backdrop-filter: blur(10px);
-  }
-
-  .project-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px var(--shadow-strong);
-    border-color: var(--border-strong);
-    border-top-color: var(--primary);
-    border-left-color: var(--primary);
   }
 
   .project-card h2 {
@@ -104,11 +85,10 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 14px;
+    padding: 6px 12px;
     background: var(--accent-soft);
-    border: 1px solid var(--accent);
-    border-radius: 12px;
-    font-size: 13px;
+    border-radius: 999px;
+    font-size: 12.5px;
     font-weight: 600;
     color: var(--accent-strong);
     transition: background 0.2s ease;
@@ -119,8 +99,8 @@
   }
 
   .tag-icon .icon {
-    width: 18px;
-    height: 18px;
+    width: 15px;
+    height: 15px;
     flex-shrink: 0;
   }
 
@@ -143,12 +123,16 @@
     color: var(--primary);
     text-decoration: none;
     padding: 8px 16px;
-    border-radius: 8px;
+    border-radius: 999px;
     background: var(--primary-soft);
-    border: 1px solid var(--primary);
+    border: 1px solid transparent;
     font-weight: 600;
-    transition: all 0.25s ease;
     font-size: 13px;
+    transition:
+      background 0.25s ease,
+      color 0.25s ease,
+      transform 0.35s var(--ease-spring),
+      box-shadow 0.25s ease;
   }
 
   .link-icon .icon {
@@ -161,7 +145,7 @@
     background: var(--primary);
     color: var(--bg-base);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--shadow-strong);
+    box-shadow: 0 6px 16px -6px var(--primary);
   }
 
   @media (max-width: 900px) {

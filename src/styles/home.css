@@ -78,16 +78,24 @@
   }
 
   .tech-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(42px, 6vw, 50px);
+    height: clamp(42px, 6vw, 50px);
+    border-radius: 14px;
+    background: var(--primary-soft);
     color: var(--text-muted);
     transition:
       color 0.2s ease,
-      transform 0.2s ease;
-    display: flex;
+      background 0.2s ease,
+      transform 0.35s var(--ease-spring);
   }
 
   .tech-icon:hover {
     color: var(--primary);
-    transform: scale(1.15);
+    background: var(--primary-soft-hover);
+    transform: translateY(-3px) scale(1.06);
   }
 
   .tech-icon .icon {
@@ -97,11 +105,6 @@
 
   .box {
     padding: clamp(16px, 3vw, 24px);
-    background: var(--surface);
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    box-shadow: 0 4px 12px var(--shadow);
     width: 100%;
     box-sizing: border-box;
   }
@@ -148,7 +151,7 @@
     }
 
     .box {
-      border-radius: 12px;
+      border-radius: 14px;
     }
   }
 }

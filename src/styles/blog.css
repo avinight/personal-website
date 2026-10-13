@@ -42,21 +42,6 @@
     display: block;
     text-decoration: none;
     padding: 28px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 8px 16px 16px 8px;
-    box-shadow: 0 4px 12px var(--shadow);
-    transition:
-      transform 0.25s ease,
-      box-shadow 0.25s ease,
-      border-color 0.25s ease;
-  }
-
-  .post-card:hover {
-    transform: translateX(4px);
-    box-shadow: 0 8px 22px var(--shadow-strong);
-    border-left-color: var(--primary);
   }
 
   .post-meta {
@@ -76,10 +61,9 @@
   .tag {
     font-size: 11px;
     font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 20px;
+    padding: 3px 9px;
+    border-radius: 999px;
     background: var(--accent-soft);
-    border: 1px solid var(--accent);
     color: var(--accent-strong);
     text-transform: lowercase;
   }

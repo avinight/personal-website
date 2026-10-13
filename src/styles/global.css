@@ -76,6 +76,64 @@ body {
   display: none;
 }
 
+/* Shared card look for boxes, timeline entries, projects, posts and links. */
+:root {
+  --card-radius: 18px;
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --card-shadow: 0 1px 2px var(--shadow), 0 14px 34px -20px var(--shadow-strong);
+  --card-shadow-hover: 0 2px 6px var(--shadow), 0 24px 48px -22px var(--shadow-strong);
+}
+
+:where(.box, .exp-card, .project-card, .post-card, .anime-card, .social-card) {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  box-shadow:
+    var(--card-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+  transition:
+    transform 0.35s var(--ease-spring),
+    box-shadow 0.35s var(--ease-spring),
+    border-color 0.25s ease;
+}
+
+/* A thin terracotta-to-teal line that lights up along the top on hover. */
+:where(.box, .exp-card, .project-card, .post-card, .anime-card, .social-card)::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 22px;
+  right: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+:where(.exp-card, .project-card, .post-card, .anime-card, .social-card):hover,
+:where(.box):hover {
+  transform: translateY(-3px);
+  border-color: var(--border-strong);
+  box-shadow:
+    var(--card-shadow-hover),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+:where(.box, .exp-card, .project-card, .post-card, .anime-card, .social-card):hover::before {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.box, .exp-card, .project-card, .post-card, .anime-card, .social-card):hover {
+    transform: none;
+  }
+}
+
 /* Icons exported to public/icons; single-colour ones are masks over currentColor. */
 .icon {
   display: inline-block;
