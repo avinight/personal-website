@@ -1,47 +1,33 @@
-# Astro Starter Kit: Basics
+# Frederick Meneses — personal website
 
-```sh
-pnpm create astro@latest -- --template basics
-```
+Built with [Elm](https://elm-lang.org) and [Vite](https://vite.dev), hosted on Cloudflare Pages.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Commands
 
-## 🚀 Project Structure
+| Command           | What it does                                        |
+| ----------------- | --------------------------------------------------- |
+| `npm install`     | Install dependencies (also fetches the Elm compiler) |
+| `npm run dev`     | Start a dev server at `localhost:5173`               |
+| `npm run build`   | Build the site into `dist/`                         |
+| `npm run preview` | Serve the built site locally                        |
+| `npm run icons`   | Export any newly used icons to `public/icons/`      |
 
-Inside of your Astro project, you'll see the following folders and files:
+The visitor counter calls the Cloudflare Pages function in `functions/api/visitors.js`,
+so it only shows a number when the site runs on Cloudflare (or `wrangler pages dev dist`).
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+## Where things live
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+- `src/Data/` — bio, experience, education and projects. Edit these to change the content.
+  In descriptions, `*text*` is bold and `$tex$` is math.
+- `src/Page/` — one module per page; `src/Main.elm` holds routing, the header and the footer.
+- `src/Logo.elm` — the animated logo. Each picture is drawn as text out of `█ ◤ ◥ ◢ ◣` cells,
+  so adding a new one is a matter of drawing it.
+- `content/blog/*.md` — blog posts. Markdown and math are rendered at build time.
+  Posts with `draft: true` in their front matter stay hidden.
+- `src/styles/` — CSS, one file per page or component.
 
-## 🧞 Commands
+## Cloudflare Pages settings
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-# rebuilt
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Environment variable: `COUNTERAPI_KEY` (used by the visitor counter function)

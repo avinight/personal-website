@@ -1,8 +1,8 @@
 # build output
 dist/
 
-# generated types
-.astro/
+# elm build cache
+elm-stuff/
 
 # dependencies
 node_modules/

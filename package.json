@@ -1,27 +1,26 @@
 {
-  "name": "",
+  "name": "personal-website",
+  "private": true,
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "icons": "node scripts/build-icons.mjs"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.6",
-    "@astrojs/solid-js": "^5.1.0",
+    "katex": "^0.16.45"
+  },
+  "devDependencies": {
     "@iconify-json/lucide": "^1.2.63",
-    "@iconify-json/mdi": "^1.2.3",
     "@iconify-json/simple-icons": "^1.2.48",
     "@iconify-json/twemoji": "^1.2.5",
-    "astro": "^5.13.3",
-    "astro-icon": "^1.1.5",
-    "class-variance-authority": "^0.7.1",
-    "katex": "^0.16.45",
-    "rehype-katex": "^7.0.1",
-    "remark-math": "^6.0.0",
-    "solid-js": "^1.9.9",
-    "typescript": "^5.9.3"
+    "elm": "0.19.1-6",
+    "lightningcss": "^1.30.1",
+    "marked": "^18.1.1",
+    "marked-katex-extension": "^5.1.13",
+    "vite": "^7.3.7",
+    "vite-plugin-elm": "^3.0.1"
   }
 }
