@@ -1,5 +1,6 @@
 port module Main exposing (main)
 
+import Backdrop
 import Browser
 import Browser.Dom
 import Browser.Navigation as Nav
@@ -61,6 +62,7 @@ type alias Model =
     , reducedMotion : Bool
     , typed : Int
     , logo : Logo.Model
+    , backdrop : Backdrop.Model
     }
 
 
@@ -109,6 +111,7 @@ init json url key =
       , reducedMotion = flags.reducedMotion
       , typed = startTyping flags.reducedMotion
       , logo = Logo.init flags.reducedMotion
+      , backdrop = Backdrop.init flags.reducedMotion
       }
     , fetchVisitors flags.newVisitor
     )
@@ -147,6 +150,7 @@ type Msg
     | GotVisitors (Result Http.Error (Maybe Int))
     | TypeTick Time.Posix
     | LogoMsg Logo.Msg
+    | BackdropMsg Backdrop.Msg
     | NoOp
 
 
@@ -200,6 +204,9 @@ update msg model =
         LogoMsg logoMsg ->
             ( { model | logo = Logo.update logoMsg model.logo }, Cmd.none )
 
+        BackdropMsg backdropMsg ->
+            ( { model | backdrop = Backdrop.update backdropMsg model.backdrop }, Cmd.none )
+
         NoOp ->
             ( model, Cmd.none )
 
@@ -216,18 +223,21 @@ themeName theme =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    if model.route == Route.Home then
-        Sub.batch
-            [ Sub.map LogoMsg (Logo.subscriptions model.logo)
-            , if model.typed < String.length Bio.greeting then
-                Time.every 90 TypeTick
+    Sub.batch
+        [ Sub.map BackdropMsg (Backdrop.subscriptions model.backdrop)
+        , if model.route == Route.Home then
+            Sub.batch
+                [ Sub.map LogoMsg (Logo.subscriptions model.logo)
+                , if model.typed < String.length Bio.greeting then
+                    Time.every 90 TypeTick
 
-              else
-                Sub.none
-            ]
+                  else
+                    Sub.none
+                ]
 
-    else
-        Sub.none
+          else
+            Sub.none
+        ]
 
 
 
@@ -240,6 +250,7 @@ view model =
     , body =
         [ img [ id "bg-image", src "/background.svg", alt "", attribute "fetchpriority" "high" ] []
         , div [ id "bg-overlay" ] []
+        , Backdrop.view model.backdrop
         , div [ id "page-content" ]
             [ viewHeader model
             , Html.Keyed.node "div"
