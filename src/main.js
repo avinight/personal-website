@@ -1,6 +1,7 @@
 import 'katex/dist/katex.min.css';
 import posts from 'virtual:blog-posts';
 import { Elm } from './Main.elm';
+import './backdrop.js';
 import './styles/global.css';
 import './styles/header.css';
 import './styles/footer.css';

@@ -1,6 +1,5 @@
 port module Main exposing (main)
 
-import Backdrop
 import Browser
 import Browser.Dom
 import Browser.Navigation as Nav
@@ -63,7 +62,6 @@ type alias Model =
     , reducedMotion : Bool
     , typed : Int
     , logo : Logo.Model
-    , backdrop : Backdrop.Model
     }
 
 
@@ -112,7 +110,6 @@ init json url key =
       , reducedMotion = flags.reducedMotion
       , typed = startTyping flags.reducedMotion
       , logo = Logo.init flags.reducedMotion
-      , backdrop = Backdrop.init flags.reducedMotion
       }
     , fetchVisitors flags.newVisitor
     )
@@ -151,7 +148,6 @@ type Msg
     | GotVisitors (Result Http.Error (Maybe Int))
     | TypeTick Time.Posix
     | LogoMsg Logo.Msg
-    | BackdropMsg Backdrop.Msg
     | NoOp
 
 
@@ -205,9 +201,6 @@ update msg model =
         LogoMsg logoMsg ->
             ( { model | logo = Logo.update logoMsg model.logo }, Cmd.none )
 
-        BackdropMsg backdropMsg ->
-            ( { model | backdrop = Backdrop.update backdropMsg model.backdrop }, Cmd.none )
-
         NoOp ->
             ( model, Cmd.none )
 
@@ -224,21 +217,18 @@ themeName theme =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.batch
-        [ Sub.map BackdropMsg (Backdrop.subscriptions model.backdrop)
-        , if model.route == Route.Home then
-            Sub.batch
-                [ Sub.map LogoMsg (Logo.subscriptions model.logo)
-                , if model.typed < String.length Bio.greeting then
-                    Time.every 90 TypeTick
+    if model.route == Route.Home then
+        Sub.batch
+            [ Sub.map LogoMsg (Logo.subscriptions model.logo)
+            , if model.typed < String.length Bio.greeting then
+                Time.every 90 TypeTick
 
-                  else
-                    Sub.none
-                ]
+              else
+                Sub.none
+            ]
 
-          else
-            Sub.none
-        ]
+    else
+        Sub.none
 
 
 
@@ -250,7 +240,9 @@ view model =
     { title = title model.route
     , body =
             [ div [ id "bg-overlay" ] []
-            , Backdrop.view model.backdrop
+
+            -- Drawn and animated outside Elm, in src/backdrop.js.
+            , Html.node "wire-backdrop" [ class "backdrop", attribute "aria-hidden" "true" ] []
             , div [ id "page-content" ]
                 [ lazy2 viewHeader model.route model.theme
                 , Html.Keyed.node "div"
@@ -312,8 +304,8 @@ pageKey route =
             "not-found"
 
 
-{-| The backdrop redraws the page every frame, so everything that isn't
-animated is wrapped in `lazy` and only rebuilt when its inputs change.
+{-| The home page's logo redraws the page every frame, so everything that
+isn't animated is wrapped in `lazy` and only rebuilt when its inputs change.
 -}
 viewPage : Model -> Html Msg
 viewPage model =
