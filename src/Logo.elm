@@ -1,4 +1,4 @@
-module Logo exposing (Model, Msg, init, subscriptions, update, view)
+module Logo exposing (Model, Msg, init, setDark, subscriptions, update, view)
 
 {-| The animated logo on the home page: a mosaic of small triangular shards in
 the site's terracotta and teal palette. The shards fly between pictures of
@@ -20,8 +20,11 @@ import Html.Attributes as HA
 import Html.Events
 import Html.Lazy
 import Json.Decode as Decode
-import Svg exposing (Svg)
-import Svg.Attributes as SA
+import Math.Vector2 exposing (Vec2, vec2)
+import Math.Vector3 exposing (Vec3)
+import Math.Vector4 exposing (Vec4, vec4)
+import Palette
+import WebGL exposing (Mesh, Shader)
 
 
 
@@ -188,52 +191,85 @@ hold =
     2600
 
 
+{-| How long the colours take to follow a theme switch.
+-}
+fade : Float
+fade =
+    400
+
+
 
 -- MODEL
 
 
+{-| `flightMesh` holds every shard's flight from `from` to `to`, so a frame
+only tells the GPU how far along it is. `shade` fades from the light
+palette (0) to the dark one (1) when the theme switches.
+-}
 type alias Model =
     { index : Int
     , from : List Pose
     , to : List Pose
+    , flightMesh : Mesh Vertex
     , elapsed : Float
     , reducedMotion : Bool
     , pointer : Maybe ( Float, Float )
     , cursor : ( Float, Float )
     , presence : Float
+    , dark : Bool
+    , shade : Float
     }
 
 
 {-| Shards start hidden on a spiral around the logo and assemble into the
 first picture.
 -}
-init : Bool -> Model
-init reducedMotion =
+init : { reducedMotion : Bool, dark : Bool } -> Model
+init { reducedMotion, dark } =
     let
         target =
             posesFor 0 scattered
+
+        ( from, elapsed ) =
+            if reducedMotion then
+                ( target, settled )
+
+            else
+                ( scattered, 0 )
     in
-    if reducedMotion then
-        { index = 0
-        , from = target
-        , to = target
-        , elapsed = settled
-        , reducedMotion = True
-        , pointer = Nothing
-        , cursor = ( 0, 0 )
-        , presence = 0
-        }
+    { index = 0
+    , from = from
+    , to = target
+    , flightMesh = meshOf from target
+    , elapsed = elapsed
+    , reducedMotion = reducedMotion
+    , pointer = Nothing
+    , cursor = ( 0, 0 )
+    , presence = 0
+    , dark = dark
+    , shade = shadeOf dark
+    }
+
+
+{-| Fades the shards to the new theme's colours, or switches straight away
+when `fading` is off.
+-}
+setDark : Bool -> Bool -> Model -> Model
+setDark fading dark model =
+    if fading && not model.reducedMotion then
+        { model | dark = dark }
 
     else
-        { index = 0
-        , from = scattered
-        , to = target
-        , elapsed = 0
-        , reducedMotion = False
-        , pointer = Nothing
-        , cursor = ( 0, 0 )
-        , presence = 0
-        }
+        { model | dark = dark, shade = shadeOf dark }
+
+
+shadeOf : Bool -> Float
+shadeOf dark =
+    if dark then
+        1
+
+    else
+        0
 
 
 scattered : List Pose
@@ -340,6 +376,7 @@ update msg model =
                         | elapsed = elapsed
                         , cursor = ( lerp cx tx follow, lerp cy ty follow )
                         , presence = lerp model.presence wanted (1 - e ^ (-delta / 160))
+                        , shade = towards (shadeOf model.dark) (delta / fade) model.shade
                     }
             in
             if elapsed >= settled + hold then
@@ -388,10 +425,10 @@ advance model =
             posesFor next current
     in
     if model.reducedMotion then
-        { model | index = next, from = target, to = target, elapsed = settled }
+        { model | index = next, from = target, to = target, flightMesh = meshOf target target, elapsed = settled }
 
     else
-        { model | index = next, from = current, to = target, elapsed = 0 }
+        { model | index = next, from = current, to = target, flightMesh = meshOf current target, elapsed = 0 }
 
 
 subscriptions : Model -> Sub Msg
@@ -405,45 +442,6 @@ subscriptions model =
 
 
 -- ANIMATION
-
-
-{-| Shards near the pointer are pushed outward and tilted, more strongly the
-closer they are.
--}
-repel : Model -> Pose -> Pose
-repel model pose =
-    let
-        ( cx, cy ) =
-            model.cursor
-
-        dx =
-            pose.x - cx
-
-        dy =
-            pose.y - cy
-
-        dist =
-            sqrt (dx * dx + dy * dy)
-
-        reach =
-            2.4
-
-        push =
-            model.presence * ((max 0 (1 - dist / reach)) ^ 2) * 1.5
-    in
-    if push <= 0.001 then
-        pose
-
-    else if dist < 0.0001 then
-        { pose | y = pose.y - push, rot = pose.rot + push * 40 }
-
-    else
-        { pose
-            | x = pose.x + dx / dist * push
-            , y = pose.y + dy / dist * push
-            , rot = pose.rot + push * 40
-        }
-
 
 
 currentPoses : Model -> List Pose
@@ -478,6 +476,15 @@ lerp a b t =
     a + (b - a) * t
 
 
+towards : Float -> Float -> Float -> Float
+towards target step value =
+    if value < target then
+        min target (value + step)
+
+    else
+        max target (value - step)
+
+
 easeInOutCubic : Float -> Float
 easeInOutCubic t =
     if t < 0.5 then
@@ -488,6 +495,7 @@ easeInOutCubic t =
 
 
 {-| Pulls back slightly before leaving and overshoots a little on arrival.
+The vertex shader below eases the same way.
 -}
 easeInOutBack : Float -> Float
 easeInOutBack t =
@@ -506,8 +514,10 @@ easeInOutBack t =
 -- VIEW
 
 
-view : Model -> Html Msg
-view model =
+{-| `pixels` is how many device pixels wide the drawing is.
+-}
+view : Int -> Model -> Html Msg
+view pixels model =
     Html.button
         [ HA.class "logo"
         , HA.type_ "button"
@@ -517,35 +527,29 @@ view model =
         , Html.Events.on "pointermove" pointerDecoder
         , Html.Events.on "pointerleave" (Decode.succeed PointerLeft)
         ]
-        [ Svg.svg
-            [ SA.viewBox "-5 -5 10 10"
-            , SA.class "logo-art"
-            , HA.attribute "aria-hidden" "true"
-            ]
-            (if isStill model then
-                [ Html.Lazy.lazy viewShards model.to ]
+        [ if isStill model then
+            Html.Lazy.lazy7 viewArt pixels model.flightMesh settled 0 0 0 model.shade
 
-             else
-                List.indexedMap viewShard (List.map (repel model) (currentPoses model))
-            )
+          else
+            let
+                ( cx, cy ) =
+                    model.cursor
+            in
+            Html.Lazy.lazy7 viewArt pixels model.flightMesh model.elapsed cx cy model.presence model.shade
         ]
 
 
-{-| Between pictures, with nobody pointing at it, the logo doesn't move, so
-it is drawn once and left alone until the next picture.
+{-| Between pictures, with nobody pointing at it and the colours settled,
+the logo doesn't move, so it is drawn once and left alone until the next
+picture.
 -}
 isStill : Model -> Bool
 isStill model =
-    model.elapsed >= settled && model.presence < 0.0005
+    model.elapsed >= settled && model.presence < 0.0005 && model.shade == shadeOf model.dark
 
 
-viewShards : List Pose -> Svg msg
-viewShards poses =
-    Svg.g [] (List.indexedMap viewShard poses)
-
-
-{-| The SVG ignores the pointer (see logo.css), so offsets are measured
-against the button, which is exactly the size of the drawing.
+{-| The drawing ignores the pointer (see logo.css), so offsets are measured
+against the button, which is exactly the size of the logo.
 -}
 pointerDecoder : Decode.Decoder Msg
 pointerDecoder =
@@ -556,21 +560,161 @@ pointerDecoder =
         (Decode.at [ "currentTarget", "clientHeight" ] Decode.float)
 
 
-viewShard : Int -> Pose -> Svg msg
-viewShard i pose =
-    Svg.polygon
-        [ SA.points "-0.47,-0.47 0.47,-0.47 -0.47,0.47"
-        , SA.class ("shard shard-" ++ String.fromInt (modBy 4 (i * 7 // 3)))
-        , SA.transform
-            ("translate("
-                ++ String.fromFloat pose.x
-                ++ " "
-                ++ String.fromFloat pose.y
-                ++ ") rotate("
-                ++ String.fromFloat pose.rot
-                ++ ") scale("
-                ++ String.fromFloat pose.scale
-                ++ ")"
-            )
+{-| The canvas is twice the logo's size, centred on it, so shards flying in
+from the spiral or pushed by the pointer can leave the logo's box. It spans
+-10 to 10 in grid cells.
+-}
+viewArt : Int -> Mesh Vertex -> Float -> Float -> Float -> Float -> Float -> Html msg
+viewArt pixels flightMesh elapsed cx cy presence shade =
+    let
+        palette =
+            Palette.mix (shade * shade * (3 - 2 * shade)) Palette.light Palette.dark
+    in
+    WebGL.toHtmlWith
+        [ WebGL.alpha True, WebGL.antialias, WebGL.clearColor 0 0 0 0 ]
+        [ HA.class "logo-art"
+        , HA.attribute "aria-hidden" "true"
+        , HA.width pixels
+        , HA.height pixels
         ]
-        []
+        [ WebGL.entity vertexShader
+            fragmentShader
+            flightMesh
+            { elapsed = elapsed
+            , flight = flight
+            , cursor = vec2 cx cy
+            , presence = presence
+            , tone0 = palette.primary
+            , tone1 = palette.accent
+            , tone2 = palette.primaryStrong
+            , tone3 = palette.accentStrong
+            }
+        ]
+
+
+
+-- SHARDS
+
+
+{-| Every shard is one triangle, drawn as ◤ at its full size. `start` and
+`finish` are where it flies from and to, as x, y, rotation and scale; `delay`
+is when it sets off; `tone` picks one of four colours.
+-}
+type alias Vertex =
+    { start : Vec4
+    , finish : Vec4
+    , corner : Vec2
+    , delay : Float
+    , tone : Float
+    }
+
+
+meshOf : List Pose -> List Pose -> Mesh Vertex
+meshOf from to =
+    let
+        poseVec pose =
+            vec4 pose.x pose.y pose.rot pose.scale
+
+        shard i a b =
+            let
+                corner x y =
+                    { start = poseVec a
+                    , finish = poseVec b
+                    , corner = vec2 x y
+                    , delay = stagger * toFloat i
+                    , tone = toFloat (modBy 4 (i * 7 // 3))
+                    }
+            in
+            ( corner -0.47 -0.47, corner 0.47 -0.47, corner -0.47 0.47 )
+    in
+    WebGL.triangles (List.map3 shard (List.range 0 (shardCount - 1)) from to)
+
+
+type alias Uniforms =
+    { elapsed : Float
+    , flight : Float
+    , cursor : Vec2
+    , presence : Float
+    , tone0 : Vec3
+    , tone1 : Vec3
+    , tone2 : Vec3
+    , tone3 : Vec3
+    }
+
+
+{-| Flies each shard along its path the way `shardAt` does, then pushes
+shards near the pointer outward and tilts them, more strongly the closer
+they are. Rotations are in degrees, clockwise, with y pointing down.
+-}
+vertexShader : Shader Vertex Uniforms { colour : Vec3 }
+vertexShader =
+    [glsl|
+        attribute vec4 start;
+        attribute vec4 finish;
+        attribute vec2 corner;
+        attribute float delay;
+        attribute float tone;
+        uniform float elapsed;
+        uniform float flight;
+        uniform vec2 cursor;
+        uniform float presence;
+        uniform vec3 tone0;
+        uniform vec3 tone1;
+        uniform vec3 tone2;
+        uniform vec3 tone3;
+        varying vec3 colour;
+
+        float easeInOutCubic(float t) {
+            if (t < 0.5) {
+                return 4.0 * t * t * t;
+            }
+            float u = 2.0 - 2.0 * t;
+            return 1.0 - u * u * u / 2.0;
+        }
+
+        float easeInOutBack(float t) {
+            float c = 1.2 * 1.525;
+            if (t < 0.5) {
+                float u = 2.0 * t;
+                return u * u * ((c + 1.0) * u - c) / 2.0;
+            }
+            float u = 2.0 * t - 2.0;
+            return (u * u * ((c + 1.0) * u + c) + 2.0) / 2.0;
+        }
+
+        void main() {
+            float t = clamp((elapsed - delay) / flight, 0.0, 1.0);
+            float move = easeInOutBack(t);
+            vec2 centre = start.xy + (finish.xy - start.xy) * move;
+            float rot = start.z + (finish.z - start.z) * move;
+            float scale = start.w + (finish.w - start.w) * easeInOutCubic(t);
+
+            vec2 away = centre - cursor;
+            float dist = length(away);
+            float near = max(0.0, 1.0 - dist / 2.4);
+            float push = presence * near * near * 1.5;
+            if (push > 0.001) {
+                centre += dist < 0.0001 ? vec2(0.0, -push) : away / dist * push;
+                rot += push * 40.0;
+            }
+
+            float r = radians(rot);
+            vec2 p = corner * scale;
+            p = vec2(p.x * cos(r) - p.y * sin(r), p.x * sin(r) + p.y * cos(r)) + centre;
+            gl_Position = vec4(p.x / 10.0, -p.y / 10.0, 0.0, 1.0);
+
+            colour = tone < 0.5 ? tone0 : tone < 1.5 ? tone1 : tone < 2.5 ? tone2 : tone3;
+        }
+    |]
+
+
+fragmentShader : Shader {} Uniforms { colour : Vec3 }
+fragmentShader =
+    [glsl|
+        precision mediump float;
+        varying vec3 colour;
+
+        void main() {
+            gl_FragColor = vec4(colour, 1.0);
+        }
+    |]

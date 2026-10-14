@@ -1,6 +1,9 @@
 .logo {
+  position: relative;
   display: flex;
   flex-shrink: 0;
+  width: clamp(96px, 18vw, 150px);
+  height: clamp(96px, 18vw, 150px);
   padding: 0;
   border: none;
   background: none;
@@ -10,34 +13,24 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Twice the logo's size and centred on it, so shards can fly outside it. */
 .logo-art {
-  width: clamp(96px, 18vw, 150px);
-  height: clamp(96px, 18vw, 150px);
-  overflow: visible;
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
   filter: drop-shadow(0 4px 10px var(--shadow));
   /* Pointer offsets are measured on the button (see Logo.elm). */
   pointer-events: none;
+}
+
+div.logo-art {
+  display: none;
 }
 
 .logo:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 6px;
   border-radius: 12px;
-}
-
-.shard {
-  transition: fill 0.4s ease;
-}
-
-.shard-0 {
-  fill: var(--primary);
-}
-.shard-1 {
-  fill: var(--accent);
-}
-.shard-2 {
-  fill: var(--primary-strong);
-}
-.shard-3 {
-  fill: var(--accent-strong);
 }
