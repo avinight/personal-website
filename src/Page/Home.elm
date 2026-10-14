@@ -12,7 +12,7 @@ and `caret` follows them.
 view : { typed : Int, caret : Html msg, logo : Html msg } -> Html msg
 view { typed, caret, logo } =
     div [ class "page-home" ]
-        [ div [ id "container" ]
+        [ div [ class "page-container" ]
             [ main_ []
                 [ div [ id "hero" ]
                     [ div [ class "hero-top" ]

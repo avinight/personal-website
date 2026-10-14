@@ -8,10 +8,10 @@ import Browser.Navigation as Nav
 import Data.Bio as Bio
 import Decor
 import Html exposing (Html, a, button, div, footer, header, img, nav, p, span, text)
-import Html.Attributes exposing (alt, attribute, class, height, href, id, rel, src, target, width)
+import Html.Attributes exposing (alt, attribute, class, height, hidden, href, id, rel, src, target, width)
 import Html.Events exposing (onClick)
 import Html.Keyed
-import Html.Lazy exposing (lazy, lazy2)
+import Html.Lazy exposing (lazy, lazy2, lazy5, lazy7)
 import Http
 import Icon
 import Json.Decode as Decode
@@ -375,9 +375,7 @@ view model =
             , Backdrop.view model.screen (model.theme == Dark) model.backdrop
             , div [ id "page-content" ]
                 [ lazy2 viewHeader model.route model.theme
-                , Html.Keyed.node "div"
-                    [ class "page-frame" ]
-                    [ ( pageKey model.route, viewPage model ) ]
+                , Html.Keyed.node "div" [ class "page-frame" ] (viewPages model)
                 , lazy2 viewFooter model.year model.visitors
                 ]
             ]
@@ -434,63 +432,107 @@ pageKey route =
             "not-found"
 
 
-{-| The home page's logo redraws the page every frame, so everything that
-isn't animated is wrapped in `lazy` and only rebuilt when its inputs change.
+{-| Home and About draw on WebGL canvases, and setting one up costs a
+noticeable frame, so those two pages stay on the page once drawn and are
+hidden while you're elsewhere. Showing one again replays its fade-in (see
+global.css). Every other page gets a new key, and so a fresh fade-in, each
+time you navigate to it.
+
+Hidden pages are drawn lazily, so they cost nothing while the backdrop
+animates.
 -}
-viewPage : Model -> Html Msg
-viewPage model =
-    case model.route of
-        Route.Home ->
-            Page.Home.view
-                { typed = model.typed
-                , caret =
-                    Decor.caret (model.theme == Dark)
-                        (Decor.caretVisible
-                            (if typing model then
-                                Nothing
+viewPages : Model -> List ( String, Html Msg )
+viewPages model =
+    let
+        dark =
+            model.theme == Dark
+    in
+    [ ( "home"
+      , lazy7 viewHome
+            (model.route == Route.Home)
+            dark
+            model.typed
+            model.caretAge
+            model.screen.width
+            model.screen.pixelRatio
+            model.logo
+      )
+    , ( "about"
+      , lazy5 viewAbout
+            (model.route == Route.About)
+            dark
+            model.screen.pixelRatio
+            model.reducedMotion
+            model.pulseClock
+      )
+    ]
+        ++ (case model.route of
+                Route.Home ->
+                    []
 
-                             else
-                                Just model.caretAge
-                            )
+                Route.About ->
+                    []
+
+                _ ->
+                    [ ( pageKey model.route, lazy2 viewStaticPage model.route model.posts ) ]
+           )
+
+
+viewHome : Bool -> Bool -> Int -> Float -> Float -> Float -> Logo.Model -> Html Msg
+viewHome visible dark typed caretAge width pixelRatio logo =
+    div [ hidden (not visible) ]
+        [ Page.Home.view
+            { typed = typed
+            , caret =
+                Decor.caret dark
+                    (Decor.caretVisible
+                        (if typed < String.length Bio.greeting then
+                            Nothing
+
+                         else
+                            Just caretAge
                         )
-                , logo = Html.map LogoMsg (Logo.view (logoPixels model.screen) model.logo)
-                }
+                    )
+            , logo = Html.map LogoMsg (Logo.view (logoPixels width pixelRatio) logo)
+            }
+        ]
 
-        Route.About ->
-            Page.About.view
-                { pulse =
-                    \() ->
-                        Decor.pulse model.screen.pixelRatio
-                            (model.theme == Dark)
-                            (if model.reducedMotion then
-                                Nothing
 
-                             else
-                                Just model.pulseClock
-                            )
-                }
+viewAbout : Bool -> Bool -> Float -> Bool -> Float -> Html Msg
+viewAbout visible dark pixelRatio reducedMotion pulseClock =
+    div [ hidden (not visible) ]
+        [ Page.About.view
+            { pulse =
+                \() ->
+                    Decor.pulse pixelRatio
+                        dark
+                        (if reducedMotion then
+                            Nothing
 
-        _ ->
-            lazy2 viewStaticPage model.route model.posts
+                         else
+                            Just pulseClock
+                        )
+            }
+        ]
 
 
 {-| The logo is `clamp(96px, 18vw, 150px)` across (see logo.css), and its
 canvas is twice that.
 -}
-logoPixels : Backdrop.Screen -> Int
-logoPixels screen =
-    round (clamp 96 150 (screen.width * 0.18) * 2 * min 2 screen.pixelRatio)
+logoPixels : Float -> Float -> Int
+logoPixels width pixelRatio =
+    round (clamp 96 150 (width * 0.18) * 2 * min 2 pixelRatio)
 
 
 viewStaticPage : Route -> List Post -> Html Msg
 viewStaticPage route posts =
     case route of
         Route.Home ->
-            -- Drawn by viewPage, since the logo is animated.
+            -- Drawn by viewPages, which keeps it on the page.
             text ""
 
         Route.About ->
-            -- Drawn by viewPage, since the timeline pulses.
+            -- Drawn by viewPages, which keeps it on the page.
             text ""
 
         Route.Projects ->

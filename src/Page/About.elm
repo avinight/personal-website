@@ -17,9 +17,9 @@ frame.
 view : { pulse : () -> Html msg } -> Html msg
 view { pulse } =
     div [ class "page-about" ]
-        [ div [ id "container" ]
+        [ div [ class "page-container" ]
             [ main_ []
-                [ div [ id "content" ]
+                [ div [ class "page-column" ]
                     (h1 [] [ text "About Me" ]
                         :: List.map (\paragraph -> p [ class "intro" ] [ text paragraph ]) Bio.aboutIntro
                         ++ [ h2 [ class "section-heading" ] [ text "Experience" ]
