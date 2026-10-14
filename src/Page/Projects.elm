@@ -11,9 +11,9 @@ import Rich
 view : Html msg
 view =
     div [ class "page-projects" ]
-        [ div [ id "container" ]
+        [ div [ class "page-container" ]
             [ main_ []
-                [ div [ id "content" ]
+                [ div [ class "page-column" ]
                     [ h1 [] [ text "My Projects" ]
                     , p [ class "intro" ] [ text "Here are some of the cool projects I've been working on." ]
                     , div [ class "projects-grid" ] (List.map viewProject projects)

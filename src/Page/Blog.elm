@@ -9,9 +9,9 @@ import Post exposing (Post)
 viewList : List Post -> Html msg
 viewList posts =
     div [ class "page-blog" ]
-        [ div [ id "container" ]
+        [ div [ class "page-container" ]
             [ main_ []
-                [ div [ id "content" ]
+                [ div [ class "page-column" ]
                     (h1 [] [ text "Blog" ]
                         :: (case Post.published posts of
                                 [] ->
@@ -42,7 +42,7 @@ viewCard post =
 viewPost : Maybe Post -> Html msg
 viewPost maybePost =
     div [ class "page-post" ]
-        [ div [ id "container" ]
+        [ div [ class "page-container" ]
             [ main_ []
                 [ article []
                     (a [ href "/blog", class "back" ] [ text "← Back to Blog" ]

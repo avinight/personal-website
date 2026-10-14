@@ -10,7 +10,9 @@ and hosted on Cloudflare Pages.
 - **Projects** — project cards with tags, demo and source links, and inline math.
 - **Blog** — Markdown posts with KaTeX math, rendered at build time.
 
-Behind every page a faint wireframe icosahedron turns slowly and leans toward the mouse. The site
+Behind every page the five Platonic solids, nested the way Kepler drew them, turn slowly as faint
+wireframes and lean toward the mouse. The backdrop and the logo are both drawn with
+[elm-explorations/webgl](https://package.elm-lang.org/packages/elm-explorations/webgl/latest/). The site
 has a light and dark theme, and the animations stay still for visitors who prefer reduced motion.
 
 ## Getting started
@@ -75,6 +77,7 @@ src/
   Data/             site content
   Logo.elm          the shard logo; each picture is drawn as text from █ ◤ ◥ ◢ ◣ cells
   Backdrop.elm      the rotating wireframe background
+  Palette.elm       theme colours for the WebGL drawings (mirrors styles/global.css)
   Rich.elm          the *bold*, $math$ and [link](url) markup
   Icon.elm          icon rendering
   main.js           starts Elm, theme storage, KaTeX and blog post elements

@@ -2,28 +2,23 @@ module Page.Home exposing (view)
 
 import Data.Bio as Bio exposing (IconGroup)
 import Html exposing (Html, div, h1, h2, main_, p, section, span, text)
-import Html.Attributes exposing (attribute, class, classList, id, title)
+import Html.Attributes exposing (attribute, class, id, title)
 import Icon
 
 
-{-| `typed` is how many letters of the greeting have been typed out so far.
+{-| `typed` is how many letters of the greeting have been typed out so far,
+and `caret` follows them.
 -}
-view : { typed : Int, logo : Html msg } -> Html msg
-view { typed, logo } =
+view : { typed : Int, caret : Html msg, logo : Html msg } -> Html msg
+view { typed, caret, logo } =
     div [ class "page-home" ]
-        [ div [ id "container" ]
+        [ div [ class "page-container" ]
             [ main_ []
                 [ div [ id "hero" ]
                     [ div [ class "hero-top" ]
                         [ h1 [ id "greeting", attribute "aria-label" Bio.greeting ]
                             [ span [ attribute "aria-hidden" "true" ] [ text (String.left typed Bio.greeting) ]
-                            , span
-                                [ classList
-                                    [ ( "caret", True )
-                                    , ( "done", typed >= String.length Bio.greeting )
-                                    ]
-                                ]
-                                []
+                            , caret
                             ]
                         , logo
                         ]

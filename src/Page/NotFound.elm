@@ -7,9 +7,9 @@ import Html.Attributes exposing (class, href, id)
 view : Html msg
 view =
     div [ class "page-blog" ]
-        [ div [ id "container" ]
+        [ div [ class "page-container" ]
             [ main_ []
-                [ div [ id "content" ]
+                [ div [ class "page-column" ]
                     [ h1 [] [ text "Page not found" ]
                     , p [ class "intro" ]
                         [ text "There's nothing at this address. "

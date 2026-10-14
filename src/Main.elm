@@ -1,14 +1,17 @@
 port module Main exposing (main)
 
+import Backdrop
 import Browser
 import Browser.Dom
+import Browser.Events
 import Browser.Navigation as Nav
 import Data.Bio as Bio
+import Decor
 import Html exposing (Html, a, button, div, footer, header, img, nav, p, span, text)
-import Html.Attributes exposing (alt, attribute, class, height, href, id, rel, src, target, width)
+import Html.Attributes exposing (alt, attribute, class, height, hidden, href, id, rel, src, target, width)
 import Html.Events exposing (onClick)
 import Html.Keyed
-import Html.Lazy exposing (lazy, lazy2)
+import Html.Lazy exposing (lazy, lazy2, lazy5, lazy7)
 import Http
 import Icon
 import Json.Decode as Decode
@@ -43,6 +46,12 @@ main =
 port saveTheme : String -> Cmd msg
 
 
+-- Tells Elm when the visitor turns reduced motion on or off (see main.js).
+
+
+port reducedMotionChanged : (Bool -> msg) -> Sub msg
+
+
 
 -- MODEL
 
@@ -62,6 +71,10 @@ type alias Model =
     , reducedMotion : Bool
     , typed : Int
     , logo : Logo.Model
+    , screen : Backdrop.Screen
+    , backdrop : Backdrop.Model
+    , caretAge : Float
+    , pulseClock : Float
     }
 
 
@@ -71,22 +84,38 @@ type alias Flags =
     , newVisitor : Bool
     , reducedMotion : Bool
     , posts : List Post
+    , screen : Backdrop.Screen
     }
 
 
 flagsDecoder : Decode.Decoder Flags
 flagsDecoder =
-    Decode.map5 Flags
+    Decode.map6 Flags
         (Decode.field "theme" Decode.string)
         (Decode.field "year" Decode.int)
         (Decode.field "newVisitor" Decode.bool)
         (Decode.field "reducedMotion" Decode.bool)
         (Decode.field "posts" (Decode.list Post.decoder))
+        (Decode.field "screen" screenDecoder)
+
+
+screenDecoder : Decode.Decoder Backdrop.Screen
+screenDecoder =
+    Decode.map3 Backdrop.Screen
+        (Decode.field "width" Decode.float)
+        (Decode.field "height" Decode.float)
+        (Decode.field "pixelRatio" Decode.float)
 
 
 defaultFlags : Flags
 defaultFlags =
-    { theme = "dark", year = 2026, newVisitor = False, reducedMotion = False, posts = [] }
+    { theme = "dark"
+    , year = 2026
+    , newVisitor = False
+    , reducedMotion = False
+    , posts = []
+    , screen = { width = 0, height = 0, pixelRatio = 1 }
+    }
 
 
 init : Decode.Value -> Url -> Nav.Key -> ( Model, Cmd Msg )
@@ -95,21 +124,27 @@ init json url key =
         flags =
             Decode.decodeValue flagsDecoder json
                 |> Result.withDefault defaultFlags
-    in
-    ( { key = key
-      , route = Route.fromUrl url
-      , theme =
+
+        theme =
             if flags.theme == "light" then
                 Light
 
             else
                 Dark
+    in
+    ( { key = key
+      , route = Route.fromUrl url
+      , theme = theme
       , year = flags.year
       , posts = flags.posts
       , visitors = Nothing
       , reducedMotion = flags.reducedMotion
       , typed = startTyping flags.reducedMotion
-      , logo = Logo.init flags.reducedMotion
+      , logo = Logo.init { reducedMotion = flags.reducedMotion, dark = theme == Dark }
+      , screen = flags.screen
+      , backdrop = Backdrop.init
+      , caretAge = 0
+      , pulseClock = 0
       }
     , fetchVisitors flags.newVisitor
     )
@@ -148,6 +183,12 @@ type Msg
     | GotVisitors (Result Http.Error (Maybe Int))
     | TypeTick Time.Posix
     | LogoMsg Logo.Msg
+    | BackdropMsg Backdrop.Msg
+    | MouseMoved Float Float Backdrop.Screen
+    | Resized
+    | GotViewport Browser.Dom.Viewport
+    | ReducedMotionChanged Bool
+    | DecorFrame Float
     | NoOp
 
 
@@ -177,6 +218,12 @@ update msg model =
 
                         else
                             model.typed
+                    , caretAge =
+                        if route == Route.Home then
+                            0
+
+                        else
+                            model.caretAge
                   }
                 , Task.perform (\_ -> NoOp) (Browser.Dom.setViewport 0 0)
                 )
@@ -190,7 +237,12 @@ update msg model =
                     else
                         Dark
             in
-            ( { model | theme = theme }, saveTheme (themeName theme) )
+            ( { model
+                | theme = theme
+                , logo = Logo.setDark (model.route == Route.Home) (theme == Dark) model.logo
+              }
+            , saveTheme (themeName theme)
+            )
 
         GotVisitors result ->
             ( { model | visitors = Result.withDefault Nothing result }, Cmd.none )
@@ -200,6 +252,45 @@ update msg model =
 
         LogoMsg logoMsg ->
             ( { model | logo = Logo.update logoMsg model.logo }, Cmd.none )
+
+        BackdropMsg backdropMsg ->
+            ( { model | backdrop = Backdrop.update backdropMsg model.backdrop }, Cmd.none )
+
+        MouseMoved x y window ->
+            let
+                screen =
+                    model.screen
+            in
+            ( { model
+                | backdrop = Backdrop.lookAt (x / window.width * 2 - 1) (y / window.height * 2 - 1) model.backdrop
+                , screen = { screen | pixelRatio = window.pixelRatio }
+              }
+            , Cmd.none
+            )
+
+        Resized ->
+            ( model, Task.perform GotViewport Browser.Dom.getViewport )
+
+        GotViewport { viewport } ->
+            let
+                screen =
+                    model.screen
+            in
+            ( { model | screen = { screen | width = viewport.width, height = viewport.height } }, Cmd.none )
+
+        DecorFrame delta ->
+            case model.route of
+                Route.Home ->
+                    ( { model | caretAge = model.caretAge + delta }, Cmd.none )
+
+                Route.About ->
+                    ( { model | pulseClock = model.pulseClock + delta }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        ReducedMotionChanged reducedMotion ->
+            ( { model | reducedMotion = reducedMotion }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
@@ -217,18 +308,59 @@ themeName theme =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    if model.route == Route.Home then
-        Sub.batch
-            [ Sub.map LogoMsg (Logo.subscriptions model.logo)
-            , if model.typed < String.length Bio.greeting then
-                Time.every 90 TypeTick
+    Sub.batch
+        [ Sub.map BackdropMsg (Backdrop.subscriptions model.reducedMotion)
+        , Browser.Events.onMouseMove mouseDecoder
+        , Browser.Events.onResize (\_ _ -> Resized)
+        , reducedMotionChanged ReducedMotionChanged
+        , case model.route of
+            Route.Home ->
+                Sub.batch
+                    [ Sub.map LogoMsg (Logo.subscriptions model.logo)
+                    , if typing model then
+                        Time.every 90 TypeTick
 
-              else
+                      else if not model.reducedMotion && model.caretAge < Decor.caretLife then
+                        Browser.Events.onAnimationFrameDelta DecorFrame
+
+                      else
+                        Sub.none
+                    ]
+
+            Route.About ->
+                if model.reducedMotion then
+                    Sub.none
+
+                else
+                    Browser.Events.onAnimationFrameDelta DecorFrame
+
+            _ ->
                 Sub.none
-            ]
+        ]
 
-    else
-        Sub.none
+
+typing : Model -> Bool
+typing model =
+    model.typed < String.length Bio.greeting
+
+
+{-| Where the mouse is, and the window it is in. Zooming changes the device
+pixel ratio, which Elm can't otherwise read, so it is picked up here too.
+-}
+mouseDecoder : Decode.Decoder Msg
+mouseDecoder =
+    Decode.map3 MouseMoved
+        (Decode.field "clientX" Decode.float)
+        (Decode.field "clientY" Decode.float)
+        (Decode.field "view" screenDecoderFromWindow)
+
+
+screenDecoderFromWindow : Decode.Decoder Backdrop.Screen
+screenDecoderFromWindow =
+    Decode.map3 Backdrop.Screen
+        (Decode.field "innerWidth" Decode.float)
+        (Decode.field "innerHeight" Decode.float)
+        (Decode.field "devicePixelRatio" Decode.float)
 
 
 
@@ -240,14 +372,10 @@ view model =
     { title = title model.route
     , body =
             [ div [ id "bg-overlay" ] []
-
-            -- Drawn and animated outside Elm, in src/backdrop.js.
-            , Html.node "wire-backdrop" [ class "backdrop", attribute "aria-hidden" "true" ] []
+            , Backdrop.view model.screen (model.theme == Dark) model.backdrop
             , div [ id "page-content" ]
                 [ lazy2 viewHeader model.route model.theme
-                , Html.Keyed.node "div"
-                    [ class "page-frame" ]
-                    [ ( pageKey model.route, viewPage model ) ]
+                , Html.Keyed.node "div" [ class "page-frame" ] (viewPages model)
                 , lazy2 viewFooter model.year model.visitors
                 ]
             ]
@@ -304,31 +432,108 @@ pageKey route =
             "not-found"
 
 
-{-| The home page's logo redraws the page every frame, so everything that
-isn't animated is wrapped in `lazy` and only rebuilt when its inputs change.
--}
-viewPage : Model -> Html Msg
-viewPage model =
-    case model.route of
-        Route.Home ->
-            Page.Home.view
-                { typed = model.typed
-                , logo = Html.map LogoMsg (Logo.view model.logo)
-                }
+{-| Home and About draw on WebGL canvases, and setting one up costs a
+noticeable frame, so those two pages stay on the page once drawn and are
+hidden while you're elsewhere. Showing one again replays its fade-in (see
+global.css). Every other page gets a new key, and so a fresh fade-in, each
+time you navigate to it.
 
-        _ ->
-            lazy2 viewStaticPage model.route model.posts
+Hidden pages are drawn lazily, so they cost nothing while the backdrop
+animates.
+-}
+viewPages : Model -> List ( String, Html Msg )
+viewPages model =
+    let
+        dark =
+            model.theme == Dark
+    in
+    [ ( "home"
+      , lazy7 viewHome
+            (model.route == Route.Home)
+            dark
+            model.typed
+            model.caretAge
+            model.screen.width
+            model.screen.pixelRatio
+            model.logo
+      )
+    , ( "about"
+      , lazy5 viewAbout
+            (model.route == Route.About)
+            dark
+            model.screen.pixelRatio
+            model.reducedMotion
+            model.pulseClock
+      )
+    ]
+        ++ (case model.route of
+                Route.Home ->
+                    []
+
+                Route.About ->
+                    []
+
+                _ ->
+                    [ ( pageKey model.route, lazy2 viewStaticPage model.route model.posts ) ]
+           )
+
+
+viewHome : Bool -> Bool -> Int -> Float -> Float -> Float -> Logo.Model -> Html Msg
+viewHome visible dark typed caretAge width pixelRatio logo =
+    div [ hidden (not visible) ]
+        [ Page.Home.view
+            { typed = typed
+            , caret =
+                Decor.caret dark
+                    (Decor.caretVisible
+                        (if typed < String.length Bio.greeting then
+                            Nothing
+
+                         else
+                            Just caretAge
+                        )
+                    )
+            , logo = Html.map LogoMsg (Logo.view (logoPixels width pixelRatio) logo)
+            }
+        ]
+
+
+viewAbout : Bool -> Bool -> Float -> Bool -> Float -> Html Msg
+viewAbout visible dark pixelRatio reducedMotion pulseClock =
+    div [ hidden (not visible) ]
+        [ Page.About.view
+            { pulse =
+                \() ->
+                    Decor.pulse pixelRatio
+                        dark
+                        (if reducedMotion then
+                            Nothing
+
+                         else
+                            Just pulseClock
+                        )
+            }
+        ]
+
+
+{-| The logo is `clamp(96px, 18vw, 150px)` across (see logo.css), and its
+canvas is twice that.
+-}
+logoPixels : Float -> Float -> Int
+logoPixels width pixelRatio =
+    round (clamp 96 150 (width * 0.18) * 2 * min 2 pixelRatio)
 
 
 viewStaticPage : Route -> List Post -> Html Msg
 viewStaticPage route posts =
     case route of
         Route.Home ->
-            -- Drawn by viewPage, since the logo is animated.
+            -- Drawn by viewPages, which keeps it on the page.
             text ""
 
         Route.About ->
-            Page.About.view
+            -- Drawn by viewPages, which keeps it on the page.
+            text ""
 
         Route.Projects ->
             Page.Projects.view

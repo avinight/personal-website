@@ -1,5 +1,5 @@
 .page-about {
-  #container {
+  .page-container {
     min-height: 100vh;
   }
 
@@ -11,7 +11,7 @@
     margin-top: 100px;
   }
 
-  #content {
+  .page-column {
     max-width: 1000px;
     width: 100%;
     padding: 16px;
@@ -111,13 +111,19 @@
     background: var(--accent);
   }
 
-  .timeline-entry:first-child .dot::after {
-    content: "";
+  /* Drawn and pulsed in Decor.elm, centred on the dot. */
+  .dot .pulse {
     position: absolute;
-    inset: -2px;
-    border-radius: 50%;
-    border: 2px solid var(--accent);
-    animation: dot-pulse 2.4s ease-out infinite;
+    top: 50%;
+    left: 50%;
+    width: 48px;
+    height: 48px;
+    margin: -24px 0 0 -24px;
+    pointer-events: none;
+  }
+
+  .dot div.pulse {
+    display: none;
   }
 
   .timeline-entry:hover .dot {
@@ -394,22 +400,5 @@
       min-width: unset;
       width: 100%;
     }
-  }
-}
-
-@keyframes dot-pulse {
-  from {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  to {
-    transform: scale(2.4);
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .page-about .timeline-entry:first-child .dot::after {
-    animation: none;
   }
 }

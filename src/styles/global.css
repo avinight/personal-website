@@ -70,6 +70,8 @@ body {
 #page-content {
   position: relative;
   z-index: 2;
+  /* The logo's canvas reaches past its edges (logo.css); don't let it widen the page. */
+  overflow-x: clip;
 }
 
 .katex-version-check {
@@ -180,8 +182,9 @@ post-body {
   display: block;
 }
 
-/* The turning wireframes behind every page (backdrop.js). */
+/* The turning wireframes behind every page (Backdrop.elm). */
 .backdrop {
+  display: block;
   position: fixed;
   inset: 0;
   width: 100%;
@@ -194,6 +197,11 @@ post-body {
 
 :root.dark .backdrop {
   opacity: 0.16;
+}
+
+/* Without WebGL the canvas is swapped for a message; the page is fine without it. */
+div.backdrop {
+  display: none;
 }
 
 /* Links written as [text](url) in the data files (Rich.elm). */

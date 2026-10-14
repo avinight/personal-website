@@ -5,26 +5,31 @@ import Data.Education exposing (Education, education)
 import Data.Experiences exposing (Experience, experiences)
 import Html exposing (Html, a, div, h1, h2, h3, img, li, main_, p, section, span, text, ul)
 import Html.Attributes exposing (alt, class, href, id, rel, src, target)
+import Html.Lazy exposing (lazy, lazy2)
 import Icon
 import Rich
 
 
-view : Html msg
-view =
+{-| `pulse` draws the ring that pulses on the newest entry of each timeline.
+Everything else is drawn lazily, since the pulse redraws the page every
+frame.
+-}
+view : { pulse : () -> Html msg } -> Html msg
+view { pulse } =
     div [ class "page-about" ]
-        [ div [ id "container" ]
+        [ div [ class "page-container" ]
             [ main_ []
-                [ div [ id "content" ]
+                [ div [ class "page-column" ]
                     (h1 [] [ text "About Me" ]
                         :: List.map (\paragraph -> p [ class "intro" ] [ text paragraph ]) Bio.aboutIntro
                         ++ [ h2 [ class "section-heading" ] [ text "Experience" ]
-                           , div [ class "timeline" ] (List.map viewExperience experiences)
+                           , div [ class "timeline" ] (timeline pulse viewExperience experiences)
                            , h2 [ class "section-heading" ] [ text "Education" ]
-                           , div [ class "timeline" ] (List.map viewEducation education)
+                           , div [ class "timeline" ] (timeline pulse viewEducation education)
                            , h2 [ class "section-heading" ] [ text "Anime & Manga" ]
                            , viewAnime
                            , h2 [ class "section-heading" ] [ text "Socials" ]
-                           , viewSocials Bio.socials
+                           , lazy viewSocials Bio.socials
                            ]
                     )
                 ]
@@ -32,17 +37,30 @@ view =
         ]
 
 
-timelineEntry : List (Html msg) -> Html msg
-timelineEntry card =
+timeline : (() -> Html msg) -> (List (Html msg) -> a -> Html msg) -> List a -> List (Html msg)
+timeline pulse viewEntry entries =
+    List.indexedMap
+        (\i entry ->
+            if i == 0 then
+                viewEntry [ pulse () ] entry
+
+            else
+                lazy2 viewEntry [] entry
+        )
+        entries
+
+
+timelineEntry : List (Html msg) -> List (Html msg) -> Html msg
+timelineEntry marker card =
     div [ class "timeline-entry" ]
-        [ div [ class "timeline-marker" ] [ span [ class "dot" ] [] ]
+        [ div [ class "timeline-marker" ] [ span [ class "dot" ] marker ]
         , section [ class "exp-card" ] card
         ]
 
 
-viewExperience : Experience -> Html msg
-viewExperience exp =
-    timelineEntry
+viewExperience : List (Html msg) -> Experience -> Html msg
+viewExperience marker exp =
+    timelineEntry marker
         (List.concat
             [ [ div [ class "exp-header" ]
                     [ div [ class "exp-left" ]
@@ -78,9 +96,9 @@ viewExperience exp =
         )
 
 
-viewEducation : Education -> Html msg
-viewEducation edu =
-    timelineEntry
+viewEducation : List (Html msg) -> Education -> Html msg
+viewEducation marker edu =
+    timelineEntry marker
         (div [ class "exp-header" ]
             [ div [ class "titles" ]
                 [ h3 [] [ text edu.degree ]

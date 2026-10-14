@@ -1,7 +1,6 @@
 import 'katex/dist/katex.min.css';
 import posts from 'virtual:blog-posts';
 import { Elm } from './Main.elm';
-import './backdrop.js';
 import './styles/global.css';
 import './styles/header.css';
 import './styles/footer.css';
@@ -70,15 +69,24 @@ applyTheme(theme);
 const newVisitor = !storage('fm-visited');
 if (newVisitor) storage('fm-visited', '1');
 
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
 const app = Elm.Main.init({
   flags: {
     theme,
     year: new Date().getFullYear(),
     newVisitor,
-    reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    reducedMotion: reducedMotion.matches,
     posts,
+    screen: {
+      width: document.documentElement.clientWidth,
+      height: document.documentElement.clientHeight,
+      pixelRatio: window.devicePixelRatio || 1,
+    },
   },
 });
+
+reducedMotion.addEventListener('change', (event) => app.ports.reducedMotionChanged.send(event.matches));
 
 app.ports.saveTheme.subscribe((next) => {
   applyTheme(next);

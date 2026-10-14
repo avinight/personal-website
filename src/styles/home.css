@@ -1,5 +1,5 @@
 .page-home {
-  #container {
+  .page-container {
     min-height: 100vh;
   }
 
@@ -44,18 +44,16 @@
     color: var(--primary);
   }
 
+  /* Drawn and blinked in Decor.elm. */
   .caret {
     display: inline-block;
     width: 3px;
     height: 1.1em;
     margin-left: 2px;
-    background: var(--primary);
   }
 
-  .caret.done {
-    animation:
-      caret-blink 0.7s step-end 3,
-      caret-out 0s linear 2.1s forwards;
+  div.caret {
+    display: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -145,21 +143,5 @@
     .box {
       border-radius: 14px;
     }
-  }
-}
-
-@keyframes caret-blink {
-  from,
-  to {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-@keyframes caret-out {
-  to {
-    opacity: 0;
   }
 }
