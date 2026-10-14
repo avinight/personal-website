@@ -6,6 +6,7 @@ import Browser.Dom
 import Browser.Events
 import Browser.Navigation as Nav
 import Data.Bio as Bio
+import Decor
 import Html exposing (Html, a, button, div, footer, header, img, nav, p, span, text)
 import Html.Attributes exposing (alt, attribute, class, height, href, id, rel, src, target, width)
 import Html.Events exposing (onClick)
@@ -72,6 +73,8 @@ type alias Model =
     , logo : Logo.Model
     , screen : Backdrop.Screen
     , backdrop : Backdrop.Model
+    , caretAge : Float
+    , pulseClock : Float
     }
 
 
@@ -140,6 +143,8 @@ init json url key =
       , logo = Logo.init { reducedMotion = flags.reducedMotion, dark = theme == Dark }
       , screen = flags.screen
       , backdrop = Backdrop.init
+      , caretAge = 0
+      , pulseClock = 0
       }
     , fetchVisitors flags.newVisitor
     )
@@ -183,6 +188,7 @@ type Msg
     | Resized
     | GotViewport Browser.Dom.Viewport
     | ReducedMotionChanged Bool
+    | DecorFrame Float
     | NoOp
 
 
@@ -212,6 +218,12 @@ update msg model =
 
                         else
                             model.typed
+                    , caretAge =
+                        if route == Route.Home then
+                            0
+
+                        else
+                            model.caretAge
                   }
                 , Task.perform (\_ -> NoOp) (Browser.Dom.setViewport 0 0)
                 )
@@ -266,6 +278,17 @@ update msg model =
             in
             ( { model | screen = { screen | width = viewport.width, height = viewport.height } }, Cmd.none )
 
+        DecorFrame delta ->
+            case model.route of
+                Route.Home ->
+                    ( { model | caretAge = model.caretAge + delta }, Cmd.none )
+
+                Route.About ->
+                    ( { model | pulseClock = model.pulseClock + delta }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
+
         ReducedMotionChanged reducedMotion ->
             ( { model | reducedMotion = reducedMotion }, Cmd.none )
 
@@ -290,19 +313,35 @@ subscriptions model =
         , Browser.Events.onMouseMove mouseDecoder
         , Browser.Events.onResize (\_ _ -> Resized)
         , reducedMotionChanged ReducedMotionChanged
-        , if model.route == Route.Home then
-            Sub.batch
-                [ Sub.map LogoMsg (Logo.subscriptions model.logo)
-                , if model.typed < String.length Bio.greeting then
-                    Time.every 90 TypeTick
+        , case model.route of
+            Route.Home ->
+                Sub.batch
+                    [ Sub.map LogoMsg (Logo.subscriptions model.logo)
+                    , if typing model then
+                        Time.every 90 TypeTick
 
-                  else
+                      else if not model.reducedMotion && model.caretAge < Decor.caretLife then
+                        Browser.Events.onAnimationFrameDelta DecorFrame
+
+                      else
+                        Sub.none
+                    ]
+
+            Route.About ->
+                if model.reducedMotion then
                     Sub.none
-                ]
 
-          else
-            Sub.none
+                else
+                    Browser.Events.onAnimationFrameDelta DecorFrame
+
+            _ ->
+                Sub.none
         ]
+
+
+typing : Model -> Bool
+typing model =
+    model.typed < String.length Bio.greeting
 
 
 {-| Where the mouse is, and the window it is in. Zooming changes the device
@@ -404,7 +443,31 @@ viewPage model =
         Route.Home ->
             Page.Home.view
                 { typed = model.typed
+                , caret =
+                    Decor.caret (model.theme == Dark)
+                        (Decor.caretVisible
+                            (if typing model then
+                                Nothing
+
+                             else
+                                Just model.caretAge
+                            )
+                        )
                 , logo = Html.map LogoMsg (Logo.view (logoPixels model.screen) model.logo)
+                }
+
+        Route.About ->
+            Page.About.view
+                { pulse =
+                    \() ->
+                        Decor.pulse model.screen.pixelRatio
+                            (model.theme == Dark)
+                            (if model.reducedMotion then
+                                Nothing
+
+                             else
+                                Just model.pulseClock
+                            )
                 }
 
         _ ->
@@ -427,7 +490,8 @@ viewStaticPage route posts =
             text ""
 
         Route.About ->
-            Page.About.view
+            -- Drawn by viewPage, since the timeline pulses.
+            text ""
 
         Route.Projects ->
             Page.Projects.view
