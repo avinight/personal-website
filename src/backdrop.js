@@ -93,8 +93,8 @@ const solids = [
 // always fills it.
 const VIEW = 2.5;
 const LINE_WIDTH = 1.25; // CSS pixels
-const DOT_RADIUS = 0.046; // in the nest's units
-const DOT_SIDES = 32;
+const RING_RADIUS = 0.046; // in the nest's units
+const RING_SIDES = 32;
 
 // Edges and corners further back are fainter.
 const depthFade = (z) => 0.3 + 0.7 * Math.min(1, Math.max(0, (z + 1) / 2));
@@ -117,22 +117,23 @@ function step(delta) {
 
 // Each vertex is x, y in device pixels, then a premultiplied colour.
 const FLOATS = 6;
-const vertexCount = solids.reduce((n, s) => n + s.edges.length * 6 + s.corners.length * DOT_SIDES * 3, 0);
+const vertexCount = solids.reduce((n, s) => n + s.edges.length * 6 + s.corners.length * RING_SIDES * 6, 0);
 const vertices = new Float32Array(vertexCount * FLOATS);
 
-const circle = Array.from({ length: DOT_SIDES + 1 }, (_, i) => {
-  const t = (i / DOT_SIDES) * 2 * Math.PI;
+const circle = Array.from({ length: RING_SIDES + 1 }, (_, i) => {
+  const t = (i / RING_SIDES) * 2 * Math.PI;
   return [Math.cos(t), Math.sin(t)];
 });
 
 // Fill `vertices` with this frame's triangles: every edge as a thin quad,
-// then every corner as a small disc, solid by solid, outermost first.
+// then every corner as a thin ring, solid by solid, outermost first.
 function build(width, height, dpr, colours) {
   const scale = (Math.max(width, height) / VIEW) * dpr;
   const cx = (width * dpr) / 2;
   const cy = (height * dpr) / 2;
   const halfLine = (LINE_WIDTH * dpr) / 2;
-  const dot = DOT_RADIUS * scale;
+  const outer = RING_RADIUS * scale;
+  const inner = outer - halfLine * 2;
   const [tx, ty] = motion.tilt;
   let k = 0;
 
@@ -180,11 +181,17 @@ function build(width, height, dpr, colours) {
       put(bx - nx, by - ny, colour, a);
     }
 
-    for (const [x, y] of points) {
-      for (let s = 0; s < DOT_SIDES; s++) {
-        put(x, y, colour, 1);
-        put(x + circle[s][0] * dot, y + circle[s][1] * dot, colour, 1);
-        put(x + circle[s + 1][0] * dot, y + circle[s + 1][1] * dot, colour, 1);
+    for (const [x, y, z] of points) {
+      const a = depthFade(z);
+      for (let s = 0; s < RING_SIDES; s++) {
+        const [c0, s0] = circle[s];
+        const [c1, s1] = circle[s + 1];
+        put(x + c0 * outer, y + s0 * outer, colour, a);
+        put(x + c0 * inner, y + s0 * inner, colour, a);
+        put(x + c1 * outer, y + s1 * outer, colour, a);
+        put(x + c1 * outer, y + s1 * outer, colour, a);
+        put(x + c0 * inner, y + s0 * inner, colour, a);
+        put(x + c1 * inner, y + s1 * inner, colour, a);
       }
     }
   }
