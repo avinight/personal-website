@@ -23,6 +23,7 @@ view { typed, caret, logo } =
                         , logo
                         ]
                     , section [ class "box" ] (List.map (\paragraph -> p [] [ text paragraph ]) Bio.about)
+                    , section [ class "box" ] (List.map (\paragraph -> p [] [ text paragraph ]) Bio.activeInterests)
                     , iconBox Bio.techStack
                     , iconBox Bio.languages
                     ]

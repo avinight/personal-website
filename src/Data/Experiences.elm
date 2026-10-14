@@ -25,7 +25,7 @@ experiences =
       , org = "TD Bank"
       , location = "Toronto, ON"
       , dates = "May 2026 - August 2026"
-      , summary = "Backend/DevOps"
+      , summary = "DevSecOps on the Pipelines and Platforms team."
       , highlights =
             [ "Resolved “Argument list too long” CI/CD failures blocking deployments across multiple LoBs by redesigning the GitHub Actions env payload from $O(n^2)$ to $O(n)$, bringing it under the *128 KiB* env-var limit."
             , "Built an interactive *Power BI* audit sourced from *Datadog*, surfacing per-LoB CI/CD health (active app codes, build/job success rates, median deploy time, prod deploy volume) to support an active audit, reviewed at the *VP/SVP* level."
@@ -40,7 +40,7 @@ experiences =
       , org = "University of Toronto"
       , location = "Toronto, ON"
       , dates = "January 2026 - April 2026"
-      , summary = "Applying the winding number optimization to build an inside-outside indicator function for a Gaussian splat under supervision of Prof. David Levin."
+      , summary = "VoxSeG: A post-processing pipeline for 3D geometry recovery from Gaussian Splats, supervised by Prof. David Levin who helped us refine the idea."
       , highlights = []
       , tech = [ Named "Python" "simple-icons:python" ]
       , logoUrl = Just "/logos/Utoronto_coa.svg"
@@ -49,10 +49,9 @@ experiences =
       , org = "Knowlecy Technologies Inc."
       , location = "Vancouver, BC (Remote)"
       , dates = "January 2025 - May 2025"
-      , summary = "Built core features in a *retrieval augmented generation (RAG)* chat application using *React* and *Neo4j*"
+      , summary = "A *retrieval augmented generation (RAG)* chat application that helps researchers collaborate and synthesize papers with AI."
       , highlights =
-            [ "Eliminated *10+* critical rendering bottlenecks, reducing UI latency and improving application stability."
-            , "Enabled *persistent state management* functionality, enhancing user navigation and live feedback loops."
+            [ "I added features and performance upgrades to application's read and write functionality."
             ]
       , tech =
             [ Named "React" "simple-icons:react"

@@ -10,6 +10,7 @@ module Data.Bio exposing
     , languages
     , socials
     , techStack
+    , activeInterests
     )
 
 {-| Personal details shown on the Home and About pages. Icon names are
@@ -50,18 +51,22 @@ greeting =
 
 aboutIntro : List String
 aboutIntro =
-    [ "I am obsessed with health, technology, and learning. In my free time, I love going to the gym, climbing, playing instruments, and watching politics!"
-    , "Below are some places I've worked and studied."
-    ]
+    [ "I have a mild interest in living and in my free time, I read, gym, and climb." ]
 
 
 about : List String
 about =
-    [ "I am a software engineer, mathematics enthusiast, and lifelong learner. I am passionate about building efficient and scalable systems that solve real-world problems."
+    [ "I am a software engineer and computer scientist by trade and an artist for fun."
     , "I have research interests in data structure optimization, high performance computing, and computer graphics."
-    , "When I am not programming, I enjoy exploring the world through learning new languages, reading books, rock climbing, and playing piano."
+    , "I love to explore the world, express myself creatively through music, and participate in social activities and sports."
     ]
 
+activeInterests : List String
+activeInterests =
+    [ "Active Interests"
+    , "Currently I'm learning Rust, Lean4, and to reconnect with my soul."
+    , "I also enjoy knowledge from other domains like philosophy, medicine, and neuroscience "
+    ]
 
 anime : { anilist : Account, mal : Account }
 anime =
@@ -75,14 +80,13 @@ techStack =
     { heading = "Tech Stack"
     , items =
         [ Named "Python" "simple-icons:python"
-        , Named "Java" "simple-icons:oracle"
+        , Named "Java" "simple-icons:openjdk"
         , Named "C++" "simple-icons:cplusplus"
         , Named "C" "simple-icons:c"
         , Named "Zig" "simple-icons:zig"
-        , Named "SQL" "simple-icons:mysql"
-        , Named "JavaScript" "simple-icons:javascript"
         , Named "TypeScript" "simple-icons:typescript"
         , Named "Haskell" "simple-icons:haskell"
+        , Named "Rust" "simple-icons:rust"
         ]
     }
 

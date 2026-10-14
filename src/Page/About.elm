@@ -22,14 +22,14 @@ view { pulse } =
                 [ div [ class "page-column" ]
                     (h1 [] [ text "About Me" ]
                         :: List.map (\paragraph -> p [ class "intro" ] [ text paragraph ]) Bio.aboutIntro
-                        ++ [ h2 [ class "section-heading" ] [ text "Experience" ]
-                           , div [ class "timeline" ] (timeline pulse viewExperience experiences)
-                           , h2 [ class "section-heading" ] [ text "Education" ]
-                           , div [ class "timeline" ] (timeline pulse viewEducation education)
-                           , h2 [ class "section-heading" ] [ text "Anime & Manga" ]
+                        ++ [ h2 [ class "section-heading" ] [ text "Anime & Manga" ]
                            , viewAnime
                            , h2 [ class "section-heading" ] [ text "Socials" ]
                            , lazy viewSocials Bio.socials
+                           , h2 [ class "section-heading" ] [ text "Experience" ]
+                           , div [ class "timeline" ] (timeline pulse viewExperience experiences)
+                           , h2 [ class "section-heading" ] [ text "Education" ]
+                           , div [ class "timeline" ] (timeline pulse viewEducation education)
                            ]
                     )
                 ]
