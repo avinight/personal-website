@@ -180,7 +180,7 @@ post-body {
   display: block;
 }
 
-/* The turning wireframes behind every page (Backdrop.elm). */
+/* The turning wireframes behind every page (backdrop.js). */
 .backdrop {
   position: fixed;
   inset: 0;
@@ -188,25 +188,8 @@ post-body {
   height: 100%;
   z-index: 1;
   pointer-events: none;
-  fill: var(--accent);
-  stroke: var(--accent);
   opacity: 0.2;
-  /* Redrawn every frame: keep it on its own layer so the page on top of it
-     isn't repainted along with it. */
   contain: strict;
-  will-change: transform;
-}
-
-/* Kepler's nest alternates the two theme colours from the outside in. */
-.backdrop .solid-primary {
-  fill: var(--primary);
-  stroke: var(--primary);
-}
-
-.backdrop line {
-  stroke-width: 1.25px;
-  stroke-linecap: round;
-  vector-effect: non-scaling-stroke;
 }
 
 :root.dark .backdrop {
