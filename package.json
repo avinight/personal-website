@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && ./scripts/build-notes.sh",
     "preview": "vite preview",
     "icons": "node scripts/build-icons.mjs"
   },

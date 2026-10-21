@@ -25,3 +25,9 @@ pnpm-debug.log*
 
 # leftover Astro cache
 .astro/
+
+# Quartz digital garden
+quartz/node_modules
+quartz/.quartz-cache
+.quartz-cache
+quartz.config.yaml.bak

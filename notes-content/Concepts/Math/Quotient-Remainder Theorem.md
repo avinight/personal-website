@@ -1,0 +1,2 @@
+Theorem.
+For all $n \in \mathbb{Z}$ and $d \in \mathbb{Z}^+$, there exist $q, r \in \mathbb{Z}$ such that $n = qd + r$ and $0 \leq r < d$. Moreover, these $q$ and $r$ are unique (they are determined entirely by the values of $n$ and $d$)

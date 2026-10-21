@@ -1,0 +1,1 @@
+A system of linear equation is called homogenous if it equals the zero vector.

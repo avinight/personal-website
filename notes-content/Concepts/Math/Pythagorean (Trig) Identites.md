@@ -1,0 +1,3 @@
+$$\sin^2 x + \cos^2 x = 1$$
+$$1 + \tan^2 x = \sec^2 x$$
+$$1 + \cot^2 x = \csc^2 x$$
