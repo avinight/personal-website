@@ -1,0 +1,12 @@
+- You don't need to be stuck
+- Move on to something else if you're blocked
+- Let the initial problem stew in the background
+- Levels of subconscious → This is how our brain works
+- We only use focused thinking → Do multiple things that you can turn to → Don't waste time being frustrated
+- Move around attentively to purposely unblock yourself → Not scattered thinking
+- Thinking externally allows many more simultaneous things
+    - Reaps benefits of multitasking without any of the downsides.
+- You can see what you're thinking much clearer when your mind is a river.
+    - Flow is the experience of maximum enjoyment
+    - Flow requires movement
+    - Pivot to something else

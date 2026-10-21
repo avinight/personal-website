@@ -1,0 +1,1 @@
+the way strings of stuff is structured  

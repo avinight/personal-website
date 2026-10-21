@@ -1,0 +1,1 @@
+Refers to the fact that the gestures of one sound are not completely discrete as to timing from those of its neighbours

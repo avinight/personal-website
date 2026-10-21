@@ -1,0 +1,1 @@
+The occurrence of the dipthongs [ʌw] and [ʌj] rather than[aw] and [aj]

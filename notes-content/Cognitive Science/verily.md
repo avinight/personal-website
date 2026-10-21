@@ -1,0 +1,1 @@
+Intensifier: Speaking the truth -> Very
