@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc367
+  - computer-science
+---
 
 # Objective
 ---

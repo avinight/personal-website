@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc417
+  - computer-science
+---
 How do we build a reduced-order model that's compact and expressive?
 - Modal analysis
 - Data-driven deformation modes

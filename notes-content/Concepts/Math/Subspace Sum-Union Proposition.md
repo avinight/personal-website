@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 (1.3.8) Proposition. Let $W_1 = Span(S_1)$ and $W_2 = Span(S_2)$ be subspace of a vector space V.
 
 Then $W_1 + W_2 = Span(S_1 \cup S_2)$

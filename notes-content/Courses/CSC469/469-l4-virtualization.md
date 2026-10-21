@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc469
+  - computer-science
+---
 
 What is virtualization? Term conflated along many multiple axes
 1. What is virtualized?

@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Theorem. $\forall n, p \in \mathbb{Z}, Prime(p) \land p \nmid n \implies \text{gcd}(p, n) = 1$
 
 Proof.

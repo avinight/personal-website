@@ -1,3 +1,7 @@
+---
+tags:
+  - computer-science
+---
 The roots of this word are 
 - *poly* = "many"
 - *morphe* = "form"

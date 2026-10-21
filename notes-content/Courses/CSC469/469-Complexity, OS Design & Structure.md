@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc469
+  - computer-science
+---
 
 ### Problems in Complex Systems
 Emergent properties

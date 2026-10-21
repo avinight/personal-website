@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 $\forall x \in \mathbb{Z}, x \divides x$
 [[Every integer divides itself | Proof]]
 

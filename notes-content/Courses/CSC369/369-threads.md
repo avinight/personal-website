@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 
 the problem with signal comms is there are limited number of signal numbers
 

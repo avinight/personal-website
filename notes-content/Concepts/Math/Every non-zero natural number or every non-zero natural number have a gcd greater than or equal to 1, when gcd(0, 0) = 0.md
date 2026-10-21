@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Theorem. $\forall n, m \in \mathbb{N}, n \neq 0 \lor m \neq 0 \implies \text{gcd}(n, m) \geq 1$
 
 Proof by contrapositive.

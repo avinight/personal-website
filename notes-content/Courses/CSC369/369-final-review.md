@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 
 
 Do FTL worksheet

@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 
 ```C
 sem_t sem;  

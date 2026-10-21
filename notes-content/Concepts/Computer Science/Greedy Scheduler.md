@@ -1,3 +1,7 @@
+---
+tags:
+  - computer-science
+---
 
 Total available space is the same as finding the distance between two points on a line. [[Length of a vector]]
 

@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Proof by [[Mathematical Induction]]
 
 [[Well-Ordering Principle]]

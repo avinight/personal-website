@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 we need to add the questions to the anki
 
 0, 1, 2, 3

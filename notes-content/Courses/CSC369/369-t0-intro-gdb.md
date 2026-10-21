@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 
 Have fun storming the castle!
 

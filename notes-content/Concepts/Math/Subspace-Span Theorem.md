@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Every [[Subspace | Subspace]] is a [[Span]] and every span is a subspace.
 
 (1.3.4) Theorem.

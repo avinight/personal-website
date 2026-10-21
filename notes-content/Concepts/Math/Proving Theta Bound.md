@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Tags:
 Links: <a href='https://piazza.com/class/kjiucttm2wc498?cid=1553'>max function for concrete iterations</a>, [[165-CSC165]]
 

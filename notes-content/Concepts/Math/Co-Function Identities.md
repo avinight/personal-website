@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 $$\sin \left(\frac{\pi}{2} - x \right) = \cos x$$
 $$\cos \left(\frac{\pi}{2} - x \right) = \sin x$$
 $$\tan \left(\frac{\pi}{2} - x \right) = \cot x$$

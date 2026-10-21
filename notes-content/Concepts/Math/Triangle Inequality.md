@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 ```ad-note
 title: Theorem. Triangle inequality
 

@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc469
+  - computer-science
+---
 Multiprocessor Synchronization
 - True parallelism
 	- Code executes simultaneously on multiple CPUs

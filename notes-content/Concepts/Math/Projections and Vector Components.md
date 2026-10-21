@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Tags:
 Links: [[223 MAT223]], [[Dot Products and Orthogonality]], [[Double Angle Identities]]
 

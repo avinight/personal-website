@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Predicting what the error term will be based on the one before it.
 - Measurements were taken over time
 - Measurements close together in time tend to be correlated with each other

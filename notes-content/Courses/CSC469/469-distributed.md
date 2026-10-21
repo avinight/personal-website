@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc469
+  - computer-science
+---
 
 Cristian Algorithm is good when you have a trusted source
 Berkeley Algorithm good for P2P networks, no authoritative source

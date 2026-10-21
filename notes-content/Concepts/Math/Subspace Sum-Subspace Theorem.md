@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 (1.3.9) Theorem. Let $W_1$ and $W_2$ be subspaces of a vector space V. Then $W_1 + W_2$ is also a subspace of V.
 
 Proof. 

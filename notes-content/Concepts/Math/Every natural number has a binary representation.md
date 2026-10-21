@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Theorem
 - For every natural number $n$, there exists $p \in \mathbb{N}$ and bits $b_p, \cdots, b_0 \in \{0, 1\}$ such that $n = \sum_{i=0}^p b_i2^i$
 

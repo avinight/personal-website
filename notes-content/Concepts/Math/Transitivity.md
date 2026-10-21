@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 # Transitivity
 A convectional property that denotes a relation between a, b, and c.
 

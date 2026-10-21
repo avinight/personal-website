@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Translation.
 $\forall f, g, h : \mathbb{N} \rightarrow \mathbb{R}^{\geq 0}, (f \in \mathcal{O}(h) \land g \in \mathcal{O}(h)) \implies f + g \in \mathcal{O}(h)$
 

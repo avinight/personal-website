@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 privileged instructions:
 disabling interrupts
 writing to device registers

@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc443
+  - computer-science
+---
 In this project, you will build a key-value store from scratch. A key-value store (KV-store) is a kind of database system that stores key-value pairs and allows retrieval of a value based on its key. KV-stores exhibit the following simple API:
 
 Open(“database name”) opens your database and prepares it to run

@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc311
+  - computer-science
+---
 # Feature Mapping
 
 What if the relationship is non-linear?

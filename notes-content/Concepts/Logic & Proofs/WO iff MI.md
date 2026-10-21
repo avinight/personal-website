@@ -1,4 +1,6 @@
 ---
+tags:
+  - logic
 mathLink: auto
 ---
 Tags:

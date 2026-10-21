@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc469
+  - computer-science
+---
 [[469-spring2024]]
 [[469-fall2021]]
 [[469-fall2020]]

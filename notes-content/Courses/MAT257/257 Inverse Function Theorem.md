@@ -1,3 +1,8 @@
+---
+tags:
+  - course/mat257
+  - math
+---
 Tags:
 
 ---

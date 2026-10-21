@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc311
+  - computer-science
+---
 K-means is guaranteed to converge to the global minimum of its objective function.
 - False, it converges to a local minimum
 

@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 $$\forall k \in \mathbb R^{\geq 0}, (k < 1) \implies (\exists x_0 \in \mathbb{R}^{\geq 0}, \forall x \in \mathbb{R}^{\geq 0}, x \geq x_0 \implies (\lfloor x \rfloor)^2 \geq kx^2)$$
 
 Proof. Let $k \in \mathbb{R}^{\geq 0}$ and assume $k < 1$.

@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc469
+  - computer-science
+---
 IPC abstraction was seen as a general means for passing info between programs (as opposed to pipes, widely used at the time.)
 
 1. Proof of Concept

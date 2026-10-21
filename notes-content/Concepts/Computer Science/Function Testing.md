@@ -1,3 +1,7 @@
+---
+tags:
+  - computer-science
+---
 Tags:
 Links: [[148-CSC148]], [[Function Design Recipe]], <a href=https://hypothesis.readthedocs.io/en/latest/index.html>Hypothesis Testing </a>
 

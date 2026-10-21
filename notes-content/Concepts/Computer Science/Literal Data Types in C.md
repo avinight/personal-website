@@ -1,3 +1,7 @@
+---
+tags:
+  - computer-science
+---
 A literal is literally a hard-coded value.
 
 Literal Strings

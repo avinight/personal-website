@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc317
+  - computer-science
+---
 
 Definitions
 - mesh topology

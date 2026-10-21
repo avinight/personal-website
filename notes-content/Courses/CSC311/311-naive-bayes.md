@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc311
+  - computer-science
+---
 
 1. Learn probability of features given each class
 2. Learn prior probability of each class

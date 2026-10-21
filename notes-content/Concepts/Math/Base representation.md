@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Tags:
 Links: [[165-CSC165]], <a href=https://en.wikipedia.org/wiki/Positional_notation> Positional Notation</a>, <a href=https://www.quora.com/Why-should-a-binary-number-be-grouped-in-threes-before-converting-to-octal-and-what-is-its-order-of-conversion> Binary to Octal</a>
 

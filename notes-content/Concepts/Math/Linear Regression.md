@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Tags: #Statistics 
 Links: [[220 STA220]], <a href=https://en.wikipedia.org/wiki/Linear_regression>Linear Regression</a>,<a href=https://stats.stackexchange.com/questions/135564/null-hypothesis-for-linear-regression> Null Hypothesis Confusion </a>
 

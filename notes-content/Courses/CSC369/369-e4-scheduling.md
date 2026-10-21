@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 
 23, 20, 4.6, 43/5 = 8.6
 

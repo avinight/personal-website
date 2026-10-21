@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc311
+  - computer-science
+---
 
 We want to avoid encoding categorical variables as numeric values. 
 - inherent order and distance metric

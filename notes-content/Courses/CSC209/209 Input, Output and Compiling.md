@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc209
+  - computer-science
+---
 - [https://youtu.be/8wz1JrVbgp8](https://youtu.be/8wz1JrVbgp8)
 - [https://youtu.be/fRRD6D_Lr20](https://youtu.be/fRRD6D_Lr20 "Share link")
 - [https://youtu.be/BAaiRwn-FHE](https://youtu.be/BAaiRwn-FHE)

@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc443
+  - computer-science
+---
 > [!question] 
 > Explain the term memory hierarchy. What are the differences between primary, secondary, and tertiary storage? Give examples of each. Which of these is volatile, and which are persistent? Why is persistent storage more important for a DBMS than, say, a program that generates prime numbers? (Section 9.1)
 

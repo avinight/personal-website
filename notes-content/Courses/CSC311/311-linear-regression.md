@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc311
+  - computer-science
+---
 
 Questions I have:
 - The model restricts the hypothesis space using what methods, what is the restriction?

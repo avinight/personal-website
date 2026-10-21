@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Links: [[Problem Solving]], [[Insight]]
 (zeroing in on [[General Problem Solver#^07dc04 | relevant information]]) is trivial.
 	- How you choose to represent the initial state and the goal state.

@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 Of the three allocation strategies we talked about in class, which requires the least amount of meta data to store information about which blocks belong to a file?
 Contiguous - We only need to store the starting block and the length of the file.
 

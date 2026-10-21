@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 $$\sin (2x) = 2 \sin x \cos x$$
 $$\begin{align*} 
 \cos (2x) &= \cos^2 x - \sin^2 x \\ 

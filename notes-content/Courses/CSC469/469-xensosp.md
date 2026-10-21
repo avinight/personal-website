@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc469
+  - computer-science
+---
 
 Xen multiplexes physical resources at the granularity of an entire operating system
 Xen provides protection isolation between these OSes.

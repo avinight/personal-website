@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc443
+  - computer-science
+---
 
 - WA formulas
 - Geometric Series

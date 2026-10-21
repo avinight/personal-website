@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc417
+  - computer-science
+---
 Another way of iterating fast
 - Avoid reducing the simulation space
 - Split up problem in a way that allows us to exploit parallelism and avoid building large matrices

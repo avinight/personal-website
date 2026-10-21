@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 (1.1.6) Proposition
 
 a) the zero vector 0 is unique

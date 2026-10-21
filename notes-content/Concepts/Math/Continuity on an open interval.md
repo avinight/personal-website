@@ -1,1 +1,5 @@
+---
+tags:
+  - math
+---
 Say $f$ is continuous on $(a, b) \iff f$ is continuous at $x$ for all $x \in (a, b)$

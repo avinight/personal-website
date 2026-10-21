@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Proof of the additive identity for vector spaces
 $\forall f \in F(\mathbb{R}), \exists (-f) \in (\mathbb{R}), f + (-f) = 0_{F(\mathbb{R})}$
 

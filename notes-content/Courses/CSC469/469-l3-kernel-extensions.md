@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc469
+  - computer-science
+---
 
 - Add new functions to OS "on the lfy"
 - Why do we need to extend the OS?

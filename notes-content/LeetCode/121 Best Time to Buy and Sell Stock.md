@@ -1,3 +1,8 @@
+---
+tags:
+  - leetcode
+  - algorithms
+---
 Tags: #problem
 
 ---

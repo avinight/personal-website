@@ -1,3 +1,7 @@
+---
+tags:
+  - statistics
+---
 Tags:
 Links: [[Hypothesis and Statistical Tests]], <a href=https://www.khanacademy.org/math/ap-statistics/gathering-data-ap/statistics-experiments/v/matched-pairs-experiment-design> Matched pairs Khan </a>
 

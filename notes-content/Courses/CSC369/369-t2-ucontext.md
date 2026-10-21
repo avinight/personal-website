@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 `uc_mcontext` is the machine representation of the saved context
 
 RIP is PC

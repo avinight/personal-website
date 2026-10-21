@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc301
+  - computer-science
+---
 
 - What will our tech stack look like for Front-end and Back-end?
 

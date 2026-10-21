@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc373
+  - computer-science
+---
 Tags:
 
 ---

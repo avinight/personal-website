@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Row interpretation:
  - What vectors are simultaneously orthogonal to the rows of M.
  

@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Lemma: Every eigenvector in a matrix A corresponds to one eigenvalue.
 
 1.  Let $\vec{v}$ be a linear combination for the column vectors in matrix A. This vector is an eigenvector with a 'new' eigenvalue $\lambda$.

@@ -1,3 +1,7 @@
+---
+tags:
+  - logic
+---
 In proof writing, characterizations are alternate defintions of a concept.
 
 They are useful because they often give a very different way to look at the same concept

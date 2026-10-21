@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc458
+  - computer-science
+---
 
 Tags: #book
 

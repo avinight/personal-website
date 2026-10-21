@@ -1,3 +1,7 @@
+---
+tags:
+  - statistics
+---
 Tags: #Statistics 
 Links: [[220 STA220]], [[Hypothesis and Statistical Tests]]
 

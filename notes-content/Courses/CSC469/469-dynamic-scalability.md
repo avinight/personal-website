@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc469
+  - computer-science
+---
 Dynamic memory allocation
 - Highly parallel applications are common
 - Dynamic memory allocation is ubiquitous

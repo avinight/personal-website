@@ -1,3 +1,7 @@
+---
+tags:
+  - logic
+---
 Tags:
 Links: [[Homuncular Fallacy]]
 

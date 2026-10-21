@@ -1,3 +1,7 @@
+---
+tags:
+  - statistics
+---
 
 What is a Z-Score?
 - A z-score is an adjustment of a data value to get its position in a data set.

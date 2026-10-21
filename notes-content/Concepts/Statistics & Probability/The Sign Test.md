@@ -1,3 +1,7 @@
+---
+tags:
+  - statistics
+---
 Tags:
 Links: [[Comparing two means]], [[220 STA220]]
 

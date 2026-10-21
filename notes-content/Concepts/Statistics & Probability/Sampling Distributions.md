@@ -1,3 +1,7 @@
+---
+tags:
+  - statistics
+---
 Tags:
 Links: [[220 STA220]], [[Binomial Distribution]]
 

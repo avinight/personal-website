@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Theorem. $\forall n, m \in \N, \forall r, s \in \Z, \text{gcd}(n, m) \divides (rn + sm)$
 
 Proof.

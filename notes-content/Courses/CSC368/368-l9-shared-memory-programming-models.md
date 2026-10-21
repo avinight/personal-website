@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc368
+  - computer-science
+---
 Most OpenMP programs only use these 19 items
 
 | OMP                                                                    | Concepts                                                                                              |

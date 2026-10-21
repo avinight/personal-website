@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Tags:
 Links: [[224 MAT224]]
 

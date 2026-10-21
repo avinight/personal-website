@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc209
+  - computer-science
+---
 ## Structures
 
 Since arrays cannot be used to store this data and indices have no meaning, structs are used to aggregate data when values may not be of the same type.

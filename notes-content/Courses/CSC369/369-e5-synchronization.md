@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 
 q1 interleaved schedules
 to get 100, you can either run all withdraw then deposit or vice versa

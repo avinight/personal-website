@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc209
+  - computer-science
+---
 - [https://youtu.be/nrvfnSmJMQw](https://youtu.be/nrvfnSmJMQw)
 - [https://youtu.be/y1MdTgrMKGQ](https://youtu.be/y1MdTgrMKGQ "Share link")
 - [https://youtu.be/lKhVusqb3yw](https://youtu.be/lKhVusqb3yw)

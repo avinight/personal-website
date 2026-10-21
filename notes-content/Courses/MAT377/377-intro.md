@@ -1,3 +1,8 @@
+---
+tags:
+  - course/mat377
+  - math
+---
 
 Definitions
 - indicator function

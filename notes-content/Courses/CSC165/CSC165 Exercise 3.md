@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc165
+  - computer-science
+---
 Tags:
 Links:
 

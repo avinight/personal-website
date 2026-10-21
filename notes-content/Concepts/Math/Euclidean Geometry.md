@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Tags:
 Links: [[Geometry]]
 

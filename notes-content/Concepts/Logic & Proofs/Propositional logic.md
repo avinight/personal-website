@@ -1,3 +1,7 @@
+---
+tags:
+  - logic
+---
 Tags:
 Links: [[165-CSC165]], [[246 MAT246]]
 

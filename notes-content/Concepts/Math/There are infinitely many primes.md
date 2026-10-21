@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Theorem.
 There are infinitely many primes.
 

@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 Select all the true statements about the following code. Multiple threads may be executing code using these variables at the same time.  The variables 'mutex', 'no_space' and 'num_spaces' are global and shared by all threads.
 
 ```C

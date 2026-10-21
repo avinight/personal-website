@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Let $B = \{\vec{b}_1, \cdots, \vec{b}_n\}$ be a basis for a subspace V and let $\vec{v} \in V$.
 
 The representation of $\vec{v}$ in the B basis, $[\vec{v}]_\mathcal{B}$ is the column matrix

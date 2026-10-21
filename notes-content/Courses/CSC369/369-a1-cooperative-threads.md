@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 
 What fields will you need in your thread structure? Perhaps the most important is the thread state (e.g., running, etc.). Think about all the states that you will need to support.
 - thread state: running, blocked, ready

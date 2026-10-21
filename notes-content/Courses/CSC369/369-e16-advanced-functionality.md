@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 Processes P1 and P2 have each mapped the same 4MB shared memory region into their address spaces. (You can assume that the mapping is aligned to the start of a page boundary.) The page size on the system is 4096 bytes. Hierarchical page tables are used, but the number of levels, and the bits of virtual address used to index each level are not relevant for this question. 
 
 How many virtual pages are P1 and P2 sharing? (Remember 4MB = 4 * 1024 * 1024). Number of shared pages: 1024 (Enter the number only) 

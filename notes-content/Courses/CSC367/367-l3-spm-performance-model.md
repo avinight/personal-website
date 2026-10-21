@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc367
+  - computer-science
+---
 Using a simple model of memory to optimize
 - Assume just 2 levels in the hierarchy, fast and slow
 - Assume an element is a float and is equal to word

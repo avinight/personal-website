@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Tags:
 Links: [[Homogenous System]], [[223 MAT223]]
 

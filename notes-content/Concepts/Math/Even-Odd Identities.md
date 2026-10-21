@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 [[Even Function]]
 [[Even and odd functions]]
 $$\sin (-x) = -\sin x$$

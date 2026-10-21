@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 rank(M) = dim(range(T_M)) = dim(col(M)) where T_M is the transformation induced by M. 
 
 A basis for col(M) consists of a maximal linearly independent subset of the columns of M.

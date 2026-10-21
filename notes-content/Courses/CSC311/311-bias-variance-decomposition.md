@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc311
+  - computer-science
+---
 
 Bias: Model’s inability to capture true relationship; underfitting
 Variance: Model’s sensitivity to random fluctuations; overfitting

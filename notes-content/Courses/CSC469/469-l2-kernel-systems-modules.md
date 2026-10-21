@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc469
+  - computer-science
+---
 # l2 Kernel systems and modules
 - Layered systems: Kernel services internally organized in layers
 - Open systems: Independently replaceable system components

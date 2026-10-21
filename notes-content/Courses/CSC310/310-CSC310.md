@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc310
+  - computer-science
+---
 Tags:
 
 ---

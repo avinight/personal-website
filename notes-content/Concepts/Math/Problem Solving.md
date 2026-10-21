@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Tags: #concept, #lecture, #COG250 
 Links: [[165-CSC165]], [[250 COG250]]
 

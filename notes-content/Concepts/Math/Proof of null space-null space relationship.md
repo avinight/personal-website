@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 We know nullity(T) = dim(null(T)) = dim(null(M))
 
 The complete solution to $M\vec{x} = \vec{0}$ is

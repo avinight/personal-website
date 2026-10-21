@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 thread has no way of deciding when a context switch happens
 
 race condition: two concurrent threads manipulated a shared resource without any synchronization

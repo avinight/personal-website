@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc417
+  - computer-science
+---
 
 Yes — here’s a short, clean derivation and the meaning of every piece.
 

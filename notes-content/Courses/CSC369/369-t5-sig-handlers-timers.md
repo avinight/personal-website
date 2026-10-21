@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 functions
 - `interrupt_handler` : for timer interrupt
 - `set_interrupt`

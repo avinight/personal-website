@@ -1,3 +1,7 @@
+---
+tags:
+  - programming
+---
 printf writes to stdout
 scanf reads from stdin referring to the keyboard by default
 fprintf writes to a specified output stream

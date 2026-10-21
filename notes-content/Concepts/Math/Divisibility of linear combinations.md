@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Theorem.
 $\forall a, b, c \in \mathbb{Z}, (a \divides b \land a \divides c \implies a \divides (b + c))$
 

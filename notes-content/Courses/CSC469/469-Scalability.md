@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc469
+  - computer-science
+---
 What is scalability?
 - Ideal scalability (aka. linear scalability) means application does N times as much work on N cores as it could on 1 core.
 

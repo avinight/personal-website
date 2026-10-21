@@ -1,4 +1,6 @@
 ---
+tags:
+  - statistics
 Tags: #Statistics 
 Links:
 

@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Tags:
 Links: [[Linear Algebra]], [[224 MAT224]]
 

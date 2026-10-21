@@ -1,3 +1,7 @@
+---
+tags:
+  - statistics
+---
 [[Hypothesis Tests (Pooled T-Test for means)]]
 Two Independent Samples
 - One proportion, Sample size n, Success fraction p-hat

@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc311
+  - computer-science
+---
 https://youtu.be/XUTk3pyHIxY?si=M4eI0vnSxVisvG-h
 
 The 

@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 With load-time address binding, programs can be loaded to different memory addresses when they start, but cannot be relocated later. Why not?
 - The relocation table used during program loading is discarded once the program is ready to execute, so it would be impossible to find the addresses that need to be translated once the program starts running. 
 - **Once the program starts executing, addresses can be copied into other locations and may not even be identifiable as addresses, so the original relocation table can't be used to translate all addresses.**

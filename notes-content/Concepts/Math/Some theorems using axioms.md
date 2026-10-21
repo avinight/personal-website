@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 1. -(-a) = a
 
 Let u = -a

@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc469
+  - computer-science
+---
 
 Multi-level page tables reduce memory overhead
 - But increase address translation cost

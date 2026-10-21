@@ -1,3 +1,7 @@
+---
+tags:
+  - math
+---
 Theorem. $\forall x, y \in \mathbb{N}, y \geq 1 \land x \divides y \implies 1 \leq x \leq y$
 
  

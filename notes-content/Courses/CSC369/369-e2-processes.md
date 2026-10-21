@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 
 What information does the operating system need to store about a running process?  (Think of 4 or 5 different things.)
 - Process ID

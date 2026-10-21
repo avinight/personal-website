@@ -1,3 +1,7 @@
+---
+tags:
+  - statistics
+---
 [[Hypothesis Tests (Pooled T-Test for proportions)]]
 Two Independent Samples
 - One mean, sample size n, mean $\bar{X}$, variance $s^2$

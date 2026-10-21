@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc343
+  - computer-science
+---
 1. 7
 2. 3
 3. mID

@@ -1,3 +1,8 @@
+---
+tags:
+  - course/csc369
+  - computer-science
+---
 Why does mergesort_fork_noshm fail to sort the array?
 - The program runs out of memory due to excessive process creation.
 - The program exceeds the system's process quota, causing some forks to fail.
